@@ -1,4 +1,4 @@
-import NotificationContainer from '../src/NotificationContainer';
+import { NotificationContainer } from '../src/NotificationContainer';
 
 test('Empty test', () => {
     // Arrange
