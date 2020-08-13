@@ -17,7 +17,7 @@ export interface NotificationRemove {
 /**
  * Notification container class
  */
-class NotificationContainer {
+class NotificationContainerClass {
     // Registered add action
     private registeredAdd?: NotificationAdd;
 
@@ -64,4 +64,4 @@ class NotificationContainer {
 /**
  * Notification container object
  */
-export default new NotificationContainer();
+export const NotificationContainer = new NotificationContainerClass();
