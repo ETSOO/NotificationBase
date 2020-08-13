@@ -78,6 +78,11 @@ export abstract class Notification<UI> {
     content: string | NotificationUI<UI>;
 
     /**
+     * Dismiss timeout seed
+     */
+    private dismissSeed: number = 0;
+
+    /**
      * Unique id
      */
     readonly id: string;
@@ -127,8 +132,39 @@ export abstract class Notification<UI> {
 
     /**
      * Dismiss it
+     * @param delaySeconds Delay seconds
      */
-    abstract dismiss(): void;
+    dismiss(delaySeconds: number): void {
+        if (this.onDismiss) {
+            if (delaySeconds > 0) {
+                this.removeTimeout();
+                this.dismissSeed = window.setTimeout(
+                    this.dismiss.bind(this),
+                    delaySeconds * 1000
+                );
+                return;
+            }
+
+            this.onDismiss(NotificationDismissReason.Call);
+        }
+
+        this.dispose();
+    }
+
+    // Remove possible dismiss timeout
+    private removeTimeout() {
+        if (this.dismissSeed > 0) {
+            window.clearTimeout(this.dismissSeed);
+            this.dismissSeed = 0;
+        }
+    }
+
+    /**
+     * Dispose it
+     */
+    dispose() {
+        this.removeTimeout();
+    }
 
     /**
      * Render method

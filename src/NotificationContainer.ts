@@ -4,7 +4,7 @@ import { Notification } from './Notification';
  * Notification add
  */
 export interface NotificationAdd {
-    <UI>(notification: Notification<UI>): void;
+    <UI>(notification: Notification<UI>, top: boolean): void;
 }
 
 /**
@@ -27,8 +27,9 @@ class NotificationContainerClass {
     /**
      * Add notification
      * @param notification Notification
+     * @param top Is insert top
      */
-    add<UI>(notification: Notification<UI>): void {
+    add<UI>(notification: Notification<UI>, top: boolean = false): void {
         // Support dismiss action
         const { onDismiss } = notification;
         notification.onDismiss = (reason) => {
@@ -39,7 +40,14 @@ class NotificationContainerClass {
             if (onDismiss) onDismiss(reason);
         };
 
-        if (this.registeredAdd) this.registeredAdd(notification);
+        if (this.registeredAdd) {
+            // Call the registered add method
+            this.registeredAdd(notification, top);
+
+            // Auto dismiss in timespan seconds
+            if (notification.timespan > 0)
+                notification.dismiss(notification.timespan);
+        }
     }
 
     /**
