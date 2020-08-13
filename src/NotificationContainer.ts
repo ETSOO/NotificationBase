@@ -4,14 +4,14 @@ import { Notification } from './Notification';
  * Notification add
  */
 export interface NotificationAdd {
-    <UI>(notification: Notification<UI>, top: boolean): void;
+    (notification: Notification<any>, top: boolean): void;
 }
 
 /**
  * Notification remove
  */
 export interface NotificationRemove {
-    (id: string): void;
+    (id: string): Notification<any> | undefined;
 }
 
 /**
@@ -29,25 +29,27 @@ class NotificationContainerClass {
      * @param notification Notification
      * @param top Is insert top
      */
-    add<UI>(notification: Notification<UI>, top: boolean = false): void {
+    add(notification: Notification<any>, top: boolean = false): void {
+        if (this.registeredAdd == null) {
+            throw new Error('Registration required');
+        }
+
         // Support dismiss action
         const { onDismiss } = notification;
-        notification.onDismiss = (reason) => {
+        notification.onDismiss = () => {
             // Remove the notification
             this.remove(notification.id);
 
             // Custom onDismiss callback
-            if (onDismiss) onDismiss(reason);
+            if (onDismiss) onDismiss();
         };
 
-        if (this.registeredAdd) {
-            // Call the registered add method
-            this.registeredAdd(notification, top);
+        // Call the registered add method
+        this.registeredAdd(notification, top);
 
-            // Auto dismiss in timespan seconds
-            if (notification.timespan > 0)
-                notification.dismiss(notification.timespan);
-        }
+        // Auto dismiss in timespan seconds
+        if (notification.timespan > 0)
+            notification.dismiss(notification.timespan);
     }
 
     /**
@@ -55,15 +57,22 @@ class NotificationContainerClass {
      * @param notificationId Notification id
      */
     remove(notificationId: string): void {
-        if (this.registeredRemove) this.registeredRemove(notificationId);
+        if (this.registeredRemove == null) {
+            throw new Error('Registration required');
+        }
+        this.registeredRemove(notificationId);
     }
 
     /**
-     *
+     * Register component methods
      * @param add Add action
      * @param remove Remove action
      */
     register(add: NotificationAdd, remove: NotificationRemove) {
+        if (this.registeredAdd) {
+            throw new Error('Do not allow duplicate registration');
+        }
+
         this.registeredAdd = add;
         this.registeredRemove = remove;
     }

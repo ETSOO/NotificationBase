@@ -36,30 +36,10 @@ export interface NotificationUI<UI> {
 }
 
 /**
- * Notification dismiss reasons
- */
-export enum NotificationDismissReason {
-    /**
-     * Timespan auto dismiss
-     */
-    Auto,
-
-    /**
-     * Call method dismiss
-     */
-    Call,
-
-    /**
-     * User behavior
-     */
-    User
-}
-
-/**
  * On dismiss callback
  */
 export interface NotificationDismiss {
-    (reason: NotificationDismissReason): void;
+    (): void;
 }
 
 /**
@@ -133,8 +113,9 @@ export abstract class Notification<UI> {
     /**
      * Dismiss it
      * @param delaySeconds Delay seconds
+     * @returns Is delayed or not
      */
-    dismiss(delaySeconds: number): void {
+    dismiss(delaySeconds: number): boolean {
         if (this.onDismiss) {
             if (delaySeconds > 0) {
                 this.removeTimeout();
@@ -142,13 +123,14 @@ export abstract class Notification<UI> {
                     this.dismiss.bind(this),
                     delaySeconds * 1000
                 );
-                return;
+                return true;
             }
 
-            this.onDismiss(NotificationDismissReason.Call);
+            this.onDismiss();
         }
 
         this.dispose();
+        return false;
     }
 
     // Remove possible dismiss timeout
