@@ -101,7 +101,7 @@ export abstract class Notification<UI> {
     /**
      * Seconds to dismiss
      */
-    timespan: number = 5;
+    timespan: number = 0;
 
     /**
      * Title
@@ -139,21 +139,21 @@ export abstract class Notification<UI> {
      * @param delaySeconds Delay seconds
      * @returns Is delayed or not
      */
-    dismiss(delaySeconds: number): boolean {
-        if (this.onDismiss) {
-            if (delaySeconds > 0) {
-                this.removeTimeout();
-                this.dismissSeed = window.setTimeout(
-                    this.dismiss.bind(this),
-                    delaySeconds * 1000
-                );
-                return true;
-            }
-
-            this.onDismiss();
+    dismiss(delaySeconds: number = 0): boolean {
+        if (delaySeconds > 0) {
+            this.removeTimeout();
+            this.dismissSeed = window.setTimeout(
+                this.dismiss.bind(this),
+                delaySeconds * 1000,
+                0
+            );
+            return true;
         }
 
+        if (this.onDismiss) this.onDismiss();
+
         this.dispose();
+
         return false;
     }
 
