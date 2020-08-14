@@ -152,5 +152,5 @@ export abstract class Notification<UI> {
      * Render method
      * @param className Style class name
      */
-    abstract render(className: string): UI;
+    abstract render(className?: string): UI;
 }
