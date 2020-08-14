@@ -32,9 +32,9 @@ export enum NotificationType {
 }
 
 /**
- * Notification UI type
+ * Notification UI creator
  */
-export interface NotificationUI<UI> {
+export interface NotificationCreator<UI> {
     (): UI;
 }
 
@@ -65,7 +65,7 @@ export abstract class Notification<UI> {
     /**
      * Content
      */
-    content: string | NotificationUI<UI>;
+    content: string | NotificationCreator<UI>;
 
     /**
      * Dismiss timeout seed
@@ -105,7 +105,7 @@ export abstract class Notification<UI> {
     /**
      * Title
      */
-    title?: string | NotificationUI<UI>;
+    title?: string | NotificationCreator<UI>;
 
     /**
      * Type
@@ -121,8 +121,8 @@ export abstract class Notification<UI> {
      */
     constructor(
         type: NotificationType,
-        content: string | NotificationUI<UI>,
-        title?: string | NotificationUI<UI>,
+        content: string | NotificationCreator<UI>,
+        title?: string | NotificationCreator<UI>,
         align?: NotificationAlign
     ) {
         this.id = NewGUID();
