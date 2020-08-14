@@ -26,7 +26,7 @@ export enum NotificationType {
     Warning,
     Info,
     Danger,
-
+    Loading,
     Confirm,
     Prompt
 }
@@ -78,7 +78,7 @@ export abstract class Notification<UI> {
     readonly id: string;
 
     /**
-     * Input properties
+     * Input or control properties
      */
     inputProps?: any;
 
