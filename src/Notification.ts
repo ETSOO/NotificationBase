@@ -47,9 +47,10 @@ export interface NotificationDismiss {
 
 /**
  * On return callback
+ * return false will prevent default action
  */
-export interface NotificationReturn {
-    <T>(value: T): boolean;
+export interface NotificationReturn<T> {
+    (value: T): boolean | void;
 }
 
 /**
@@ -90,7 +91,7 @@ export abstract class Notification<UI> {
     /**
      * On return value
      */
-    onReturn?: NotificationReturn;
+    onReturn?: NotificationReturn<any>;
 
     /**
      * Show the icon or hide it
