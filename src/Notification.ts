@@ -110,21 +110,24 @@ export abstract class Notification<UI> {
     /**
      * Type
      */
-    type?: NotificationType | string;
+    type: NotificationType;
 
     /**
      * Constructor
+     * @param type Type
      * @param content Content
      * @param title Title
      * @param align Align
      */
     constructor(
+        type: NotificationType,
         content: string | NotificationUI<UI>,
         title?: string | NotificationUI<UI>,
         align?: NotificationAlign
     ) {
         this.id = NewGUID();
 
+        this.type = type;
         this.content = content;
         this.title = title;
         this.align = align || NotificationAlign.Center;
