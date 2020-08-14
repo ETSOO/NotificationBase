@@ -25,7 +25,10 @@ export enum NotificationType {
     Success,
     Warning,
     Info,
-    Danger
+    Danger,
+
+    Confirm,
+    Prompt
 }
 
 /**
@@ -40,6 +43,13 @@ export interface NotificationUI<UI> {
  */
 export interface NotificationDismiss {
     (): void;
+}
+
+/**
+ * On return callback
+ */
+export interface NotificationReturn {
+    <T>(value: T): boolean;
 }
 
 /**
@@ -68,9 +78,19 @@ export abstract class Notification<UI> {
     readonly id: string;
 
     /**
+     * Input properties
+     */
+    inputProps?: any;
+
+    /**
      * On dismiss handling
      */
     onDismiss?: NotificationDismiss;
+
+    /**
+     * On return value
+     */
+    onReturn?: NotificationReturn;
 
     /**
      * Show the icon or hide it
