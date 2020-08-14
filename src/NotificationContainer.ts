@@ -69,10 +69,6 @@ class NotificationContainerClass {
      * @param remove Remove action
      */
     register(add: NotificationAdd, remove: NotificationRemove) {
-        if (this.registeredAdd) {
-            throw new Error('Do not allow duplicate registration');
-        }
-
         this.registeredAdd = add;
         this.registeredRemove = remove;
     }
