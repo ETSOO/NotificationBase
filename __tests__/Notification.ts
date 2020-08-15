@@ -40,6 +40,9 @@ test('Tests for notification dismiss', () => {
 test('Tests for notification container', (done) => {
     // Arrange
     const n = new NotificationTest(NotificationType.Loading, 'Test');
+    n.onDismiss = () => {
+        done();
+    };
     n.timespan = 5;
 
     const add = (notification: NotificationTest) => {

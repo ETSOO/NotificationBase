@@ -145,7 +145,7 @@ export abstract class Notification<UI> {
             this.dismissSeed = window.setTimeout(
                 this.dismiss.bind(this),
                 delaySeconds * 1000,
-                0
+                0 // force to dismiss
             );
             return true;
         }

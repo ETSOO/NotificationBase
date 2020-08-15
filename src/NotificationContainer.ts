@@ -11,7 +11,7 @@ export interface NotificationAdd {
  * Notification remove
  */
 export interface NotificationRemove {
-    (id: string): Notification<any> | undefined;
+    (id: string): void;
 }
 
 /**
