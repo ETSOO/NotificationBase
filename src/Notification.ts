@@ -8,9 +8,7 @@ export enum NotificationAlign {
     TopCenter,
     TopRight,
 
-    MiddleLeft,
     Center,
-    MiddleRight,
 
     BottomLeft,
     BottomCenter,
@@ -84,6 +82,11 @@ export abstract class Notification<UI> {
     inputProps?: any;
 
     /**
+     * Display as modal
+     */
+    modal: boolean;
+
+    /**
      * On dismiss handling
      */
     onDismiss?: NotificationDismiss;
@@ -132,6 +135,11 @@ export abstract class Notification<UI> {
         this.content = content;
         this.title = title;
         this.align = align || NotificationAlign.Center;
+
+        this.modal =
+            type === NotificationType.Confirm ||
+            type === NotificationType.Loading ||
+            type === NotificationType.Prompt;
     }
 
     /**
