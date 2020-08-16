@@ -16,23 +16,38 @@ export enum NotificationAlign {
 }
 
 /**
- * Predefined types
+ * Modal types
  */
-export enum NotificationType {
-    Default,
-    Success,
-    Warning,
-    Info,
-    Danger,
-
-    /**
-     *  Default with modal window
-     */
-    Loading,
-    Confirm,
-    Prompt,
-    Error
+export enum NotificationModalType {
+    Loading = 0,
+    Confirm = 1,
+    Prompt = 2,
+    Error = 3
 }
+
+/**
+ * Message types
+ */
+export enum NotificationMessageType {
+    Default = 10,
+    Success = 11,
+    Warning = 12,
+    Info = 13,
+    Danger = 14
+}
+
+/**
+ * Merged type definition below together
+ */
+export const NotificationType = {
+    ...NotificationModalType,
+    ...NotificationMessageType
+};
+
+/**
+ * Notification types
+ */
+export type NotificationType = NotificationModalType | NotificationMessageType;
 
 /**
  * Notification UI creator
@@ -141,11 +156,7 @@ export abstract class Notification<UI> {
         this.title = title;
         this.align = align || NotificationAlign.Center;
 
-        this.modal =
-            type === NotificationType.Confirm ||
-            type === NotificationType.Loading ||
-            type === NotificationType.Prompt ||
-            type === NotificationType.Error;
+        this.modal = type in NotificationModalType;
     }
 
     /**
