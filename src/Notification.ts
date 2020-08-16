@@ -124,7 +124,7 @@ export abstract class Notification<UI> {
     /**
      * Seconds to dismiss
      */
-    timespan: number = 0;
+    timespan: number;
 
     /**
      * Title
@@ -156,7 +156,11 @@ export abstract class Notification<UI> {
         this.title = title;
         this.align = align || NotificationAlign.Center;
 
+        // Modal type
         this.modal = type in NotificationModalType;
+
+        // Display as modal will lasts otherwise 5 seconds to dismiss it
+        this.timespan = this.modal ? 0 : 5;
     }
 
     /**
