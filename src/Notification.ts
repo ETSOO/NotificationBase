@@ -24,9 +24,14 @@ export enum NotificationType {
     Warning,
     Info,
     Danger,
+
+    /**
+     *  Default with modal window
+     */
     Loading,
     Confirm,
-    Prompt
+    Prompt,
+    Error
 }
 
 /**
@@ -139,7 +144,8 @@ export abstract class Notification<UI> {
         this.modal =
             type === NotificationType.Confirm ||
             type === NotificationType.Loading ||
-            type === NotificationType.Prompt;
+            type === NotificationType.Prompt ||
+            type === NotificationType.Error;
     }
 
     /**
