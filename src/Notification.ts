@@ -79,7 +79,7 @@ export abstract class Notification<UI> {
     /**
      * Display align
      */
-    align: NotificationAlign;
+    readonly align: NotificationAlign;
 
     /**
      * Content

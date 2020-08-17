@@ -37,29 +37,44 @@ test('Tests for notification dismiss', () => {
     expect(spy).toBeCalledTimes(2);
 });
 
-test('Tests for notification container', (done) => {
+test('Tests for notification container add', (done) => {
     // Arrange
     const n = new NotificationTest(NotificationType.Loading, 'Test');
-    n.onDismiss = () => {
-        done();
-    };
-    n.timespan = 5;
 
-    const add = (notification: NotificationTest) => {
-        expect(notification.content).toBe('Test');
-        done();
-    };
-
-    const remove = (notificationId: string) => {
+    const update = (notificationId: string, remove: boolean) => {
         expect(notificationId).toBe(n.id);
+        expect(remove).toBeFalsy();
+        expect(NotificationContainer.notificationCount).toBe(1);
         done();
-        return undefined;
     };
 
-    NotificationContainer.register(add, remove);
+    NotificationContainer.register(update);
 
     // Act
     NotificationContainer.add(n);
+});
+
+test('Tests for notification container remove', (done) => {
+    // Arrange
+    const n = new NotificationTest(NotificationType.Loading, 'Test');
+    n.onDismiss = () => {
+        expect(NotificationContainer.notificationCount).toBe(1);
+        done();
+    };
+    n.timespan = 3;
+
+    const update = (notificationId: string, remove: boolean) => {
+        done();
+    };
+
+    NotificationContainer.register(update);
+
+    // Act
+    NotificationContainer.add(n);
+
+    // Assert
+    // Previous test added one
+    expect(NotificationContainer.notificationCount).toBe(2);
 
     // Fast forward
     jest.runOnlyPendingTimers();

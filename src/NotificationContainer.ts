@@ -1,28 +1,50 @@
-import { Notification } from './Notification';
+import { Notification, NotificationAlign } from './Notification';
 
 /**
- * Notification add
+ * Notification action
  */
-export interface NotificationAdd {
-    (notification: Notification<any>, top: boolean): void;
+export interface NotificationAction {
+    (id: string, remove: boolean): void;
 }
 
 /**
- * Notification remove
+ * Notifications sorted with display align type
  */
-export interface NotificationRemove {
-    (id: string): void;
-}
+export type NotificationDictionary = {
+    [key: number]: Notification<any>[];
+};
 
 /**
  * Notification container class
  */
 class NotificationContainerClass {
-    // Registered add action
-    private registeredAdd?: NotificationAdd;
+    // Registered update action
+    private registeredUpdate?: NotificationAction;
 
-    // Registered remove action
-    private registeredRemove?: NotificationRemove;
+    /**
+     * Notifications
+     */
+    readonly notifications: NotificationDictionary;
+
+    private count: number;
+    /**
+     * Notification count
+     */
+    get notificationCount(): number {
+        return this.count;
+    }
+
+    /**
+     * Constructor
+     */
+    constructor() {
+        // Init notification collection
+        this.count = 0;
+        this.notifications = {};
+        for (const align in NotificationAlign) {
+            if (!isNaN(Number(align))) this.notifications[align] = [];
+        }
+    }
 
     /**
      * Add notification
@@ -30,7 +52,7 @@ class NotificationContainerClass {
      * @param top Is insert top
      */
     add(notification: Notification<any>, top: boolean = false): void {
-        if (this.registeredAdd == null) {
+        if (this.registeredUpdate == null) {
             throw new Error('Registration required');
         }
 
@@ -38,14 +60,22 @@ class NotificationContainerClass {
         const { onDismiss } = notification;
         notification.onDismiss = () => {
             // Remove the notification
-            this.remove(notification.id);
+            this.remove(notification);
 
             // Custom onDismiss callback
             if (onDismiss) onDismiss();
         };
 
+        // Add to the collection
+        const alignItems = this.notifications[notification.align];
+        if (top) alignItems.unshift(notification);
+        else alignItems.push(notification);
+
+        // Add count
+        this.count++;
+
         // Call the registered add method
-        this.registeredAdd(notification, top);
+        this.registeredUpdate(notification.id, false);
 
         // Auto dismiss in timespan seconds
         if (notification.timespan > 0)
@@ -54,23 +84,33 @@ class NotificationContainerClass {
 
     /**
      * Remove notification
-     * @param notificationId Notification id
+     * @param notification Notification
      */
-    remove(notificationId: string): void {
-        if (this.registeredRemove == null) {
+    remove(notification: Notification<any>): void {
+        if (this.registeredUpdate == null) {
             throw new Error('Registration required');
         }
-        this.registeredRemove(notificationId);
+
+        // Remove from the collection
+        const alignItems = this.notifications[notification.align];
+        const index = alignItems.findIndex((n) => n.id === notification.id);
+        if (index !== -1) {
+            alignItems.splice(index, 1);
+
+            // Deduct count
+            this.count--;
+
+            // Trigger remove
+            this.registeredUpdate(notification.id, true);
+        }
     }
 
     /**
-     * Register component methods
-     * @param add Add action
-     * @param remove Remove action
+     * Register component action
+     * @param update Update action
      */
-    register(add: NotificationAdd, remove: NotificationRemove) {
-        this.registeredAdd = add;
-        this.registeredRemove = remove;
+    register(update: NotificationAction) {
+        this.registeredUpdate = update;
     }
 }
 
