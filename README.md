@@ -1,7 +1,21 @@
 # NotificationBase
-TypeScript notification component for extending with all features described and partially implemented
+**TypeScript notification component for extending with all features described and partially implemented.**
 
-# Notification
+## Installing
+
+Using npm:
+
+```bash
+$ npm install @etsoo/notificationbase
+```
+
+Using yarn:
+
+```bash
+$ yarn add @etsoo/notificationbase
+```
+
+## Notification
 Notification object to display.
 
 Properties:
@@ -57,7 +71,7 @@ Methods:
 ```
 
 
-# NotificationContainer
+## NotificationContainer
 NotificationContainer is a global instance of NotificationContainerClass to provide global access of properties and methods.
 
 Properties:

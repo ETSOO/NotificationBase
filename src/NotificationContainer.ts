@@ -68,8 +68,17 @@ class NotificationContainerClass {
 
         // Add to the collection
         const alignItems = this.notifications[notification.align];
-        if (top) alignItems.unshift(notification);
-        else alignItems.push(notification);
+
+        if (notification.align === NotificationAlign.Unkown) {
+            // Only one modal window is visible
+            if (alignItems.length > 0) {
+                alignItems[0].dismiss();
+            }
+            alignItems.push(notification);
+        } else {
+            if (top) alignItems.unshift(notification);
+            else alignItems.push(notification);
+        }
 
         // Add count
         this._count++;
