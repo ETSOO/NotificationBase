@@ -122,7 +122,7 @@ export abstract class Notification<UI> {
     showIcon?: boolean;
 
     /**
-     * Seconds to dismiss
+     * Seconds to auto dismiss
      */
     timespan: number;
 

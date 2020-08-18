@@ -44,7 +44,7 @@ test('Tests for notification container add', (done) => {
     const update = (notificationId: string, remove: boolean) => {
         expect(notificationId).toBe(n.id);
         expect(remove).toBeFalsy();
-        expect(NotificationContainer.notificationCount).toBe(1);
+        expect(NotificationContainer.count).toBe(1);
         done();
     };
 
@@ -58,7 +58,7 @@ test('Tests for notification container remove', (done) => {
     // Arrange
     const n = new NotificationTest(NotificationType.Loading, 'Test');
     n.onDismiss = () => {
-        expect(NotificationContainer.notificationCount).toBe(1);
+        expect(NotificationContainer.count).toBe(1);
         done();
     };
     n.timespan = 3;
@@ -74,7 +74,7 @@ test('Tests for notification container remove', (done) => {
 
     // Assert
     // Previous test added one
-    expect(NotificationContainer.notificationCount).toBe(2);
+    expect(NotificationContainer.count).toBe(2);
 
     // Fast forward
     jest.runOnlyPendingTimers();

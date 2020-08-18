@@ -22,16 +22,16 @@ class NotificationContainerClass {
     private registeredUpdate?: NotificationAction;
 
     /**
-     * Notifications
+     * Notification collection to display
      */
     readonly notifications: NotificationDictionary;
 
-    private count: number;
+    private _count: number;
     /**
      * Notification count
      */
-    get notificationCount(): number {
-        return this.count;
+    get count(): number {
+        return this._count;
     }
 
     /**
@@ -39,7 +39,7 @@ class NotificationContainerClass {
      */
     constructor() {
         // Init notification collection
-        this.count = 0;
+        this._count = 0;
         this.notifications = {};
         for (const align in NotificationAlign) {
             if (!isNaN(Number(align))) this.notifications[align] = [];
@@ -72,7 +72,7 @@ class NotificationContainerClass {
         else alignItems.push(notification);
 
         // Add count
-        this.count++;
+        this._count++;
 
         // Call the registered add method
         this.registeredUpdate(notification.id, false);
@@ -80,6 +80,16 @@ class NotificationContainerClass {
         // Auto dismiss in timespan seconds
         if (notification.timespan > 0)
             notification.dismiss(notification.timespan);
+    }
+
+    /**
+     * Dispose all notifications
+     */
+    dispose(): void {
+        for (const align in this.notifications) {
+            const items = this.notifications[align];
+            items.forEach((item) => item.dispose());
+        }
     }
 
     /**
@@ -98,7 +108,7 @@ class NotificationContainerClass {
             alignItems.splice(index, 1);
 
             // Deduct count
-            this.count--;
+            this._count--;
 
             // Trigger remove
             this.registeredUpdate(notification.id, true);
@@ -109,7 +119,7 @@ class NotificationContainerClass {
      * Register component action
      * @param update Update action
      */
-    register(update: NotificationAction) {
+    register(update: NotificationAction): void {
         this.registeredUpdate = update;
     }
 }
