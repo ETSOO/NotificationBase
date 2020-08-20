@@ -1,4 +1,4 @@
-import { NewGUID } from './Utils';
+import { Utils } from '@etsoo/shared';
 
 /**
  * Display align
@@ -150,7 +150,7 @@ export abstract class Notification<UI> {
         title?: string | NotificationCreator<UI>,
         align?: NotificationAlign
     ) {
-        this.id = NewGUID();
+        this.id = Utils.newGUID();
 
         this.type = type;
         this.content = content;
