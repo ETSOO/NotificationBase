@@ -1,4 +1,4 @@
-import { Utils } from '@etsoo/shared';
+import { DataTypes, Utils } from '@etsoo/shared';
 
 /**
  * Display align
@@ -211,5 +211,8 @@ export abstract class Notification<UI> {
      * @param className Style class name
      * @param labels UI labels
      */
-    abstract render(className?: string, labels?: object): UI;
+    abstract render(
+        className?: string,
+        labels?: DataTypes.ReadonlyStringDictionary
+    ): UI;
 }
