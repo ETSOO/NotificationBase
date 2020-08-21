@@ -209,6 +209,7 @@ export abstract class Notification<UI> {
     /**
      * Render method
      * @param className Style class name
+     * @param labels UI labels
      */
-    abstract render(className?: string): UI;
+    abstract render(className?: string, labels?: object): UI;
 }
