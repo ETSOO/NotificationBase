@@ -9,7 +9,7 @@ export enum NotificationAlign {
     TopRight,
 
     Center,
-    Unkown, // Reserved for modal, only one instance supported
+    Unknown, // Reserved for modal, only one instance held at the same time
 
     BottomLeft,
     BottomCenter,
@@ -161,7 +161,7 @@ export abstract class Notification<UI> {
 
         // Align, only available for none modal
         this.align = this.modal
-            ? NotificationAlign.Unkown
+            ? NotificationAlign.Unknown
             : align || NotificationAlign.Center;
 
         // Display as modal will lasts otherwise 5 seconds to dismiss it
