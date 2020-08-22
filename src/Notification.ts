@@ -160,9 +160,9 @@ export abstract class Notification<UI> {
         this.modal = type in NotificationModalType;
 
         // Align, only available for none modal
-        this.align = this.modal
-            ? NotificationAlign.Unknown
-            : align || NotificationAlign.Center;
+        if (this.modal) this.align = NotificationAlign.Unknown;
+        else if (align != null) this.align = align;
+        else this.align = NotificationAlign.Center;
 
         // Display as modal will lasts otherwise 5 seconds to dismiss it
         this.timespan = this.modal ? 0 : 5;
