@@ -59,6 +59,7 @@ test('Tests for notification container remove', (done) => {
     const n = new NotificationTest(NotificationType.Loading, 'Test');
     n.onDismiss = () => {
         expect(NotificationContainer.count).toBe(0);
+        expect(NotificationContainer.isLoading).toBeFalsy();
         done();
     };
     n.timespan = 3;
@@ -75,6 +76,8 @@ test('Tests for notification container remove', (done) => {
     // Assert
     // Previous test added one but a new modal type will remove it
     expect(NotificationContainer.count).toBe(1);
+    expect(NotificationContainer.isLoading).toBeTruthy();
+    expect(NotificationContainer.isModeling).toBeTruthy();
 
     // Fast forward
     jest.runOnlyPendingTimers();

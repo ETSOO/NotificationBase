@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/notificationbase",
-    "version": "1.0.28",
+    "version": "1.0.29",
     "description": "TypeScript notification component for extending with all features described and partially implemented",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -40,7 +40,7 @@
     },
     "homepage": "https://github.com/ETSOO/NotificationBase#readme",
     "dependencies": {
-        "@etsoo/shared": "^1.0.4",
+        "@etsoo/shared": "^1.0.5",
         "typescript": "^3.9.7"
     },
     "devDependencies": {

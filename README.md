@@ -80,6 +80,8 @@ Properties:
 |---:|---|
 |notifications|Readonly. Notification collection to display|
 |count|Readonly. Notification count|
+|isLoading|Is loading bar showing|
+|isModeling|Is model window showing|
 
 Methods:
 
@@ -90,6 +92,12 @@ Methods:
      * @param top Is insert top
      */
     add(notification: Notification<any>, top: boolean = false): void
+
+    /**
+     * Align notification count
+     * @param align Align
+     */
+    alignCount(align: NotificationAlign)
 
     /**
      * Dispose all notifications

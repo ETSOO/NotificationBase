@@ -1,4 +1,8 @@
-import { Notification, NotificationAlign } from './Notification';
+import {
+    Notification,
+    NotificationAlign,
+    NotificationModalType
+} from './Notification';
 
 /**
  * Notification action
@@ -30,8 +34,24 @@ class NotificationContainerClass {
     /**
      * Notification count
      */
-    get count(): number {
+    get count() {
         return this._count;
+    }
+
+    /**
+     * Is loading bar showing
+     */
+    get isLoading() {
+        return this.notifications[NotificationAlign.Unknown].some(
+            (n) => n.type === NotificationModalType.Loading
+        );
+    }
+
+    /**
+     * Is model window showing
+     */
+    get isModeling() {
+        return this.alignCount(NotificationAlign.Unknown) > 0;
     }
 
     /**
@@ -89,6 +109,14 @@ class NotificationContainerClass {
         // Auto dismiss in timespan seconds
         if (notification.timespan > 0)
             notification.dismiss(notification.timespan);
+    }
+
+    /**
+     * Align notification count
+     * @param align Align
+     */
+    alignCount(align: NotificationAlign) {
+        return this.notifications[align].length;
     }
 
     /**
