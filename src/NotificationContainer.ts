@@ -8,7 +8,7 @@ import {
  * Notification action
  */
 export interface NotificationAction {
-    (id: string): void;
+    (id: string, dismiss: boolean): void;
 }
 
 /**
@@ -63,9 +63,21 @@ class NotificationContainerClass {
      * @param top Is insert top
      */
     add(notification: Notification<any>, top: boolean = false): void {
-        if (this.registeredUpdate == null) {
+        // Callback validate
+        const { registeredUpdate } = this;
+        if (registeredUpdate == null) {
             throw new Error('Registration required');
         }
+
+        // Support dismiss action
+        const { onDismiss } = notification;
+        notification.onDismiss = () => {
+            // Call the registered callback
+            registeredUpdate(notification.id, true);
+
+            // Custom onDismiss callback
+            if (onDismiss) onDismiss();
+        };
 
         // Add to the collection
         const alignItems = this.notifications[notification.align];
@@ -81,8 +93,8 @@ class NotificationContainerClass {
             else alignItems.push(notification);
         }
 
-        // Call the registered add method
-        this.registeredUpdate(notification.id);
+        // Call the registered callback
+        registeredUpdate(notification.id, false);
 
         // Auto dismiss in timespan seconds
         if (notification.timespan > 0)

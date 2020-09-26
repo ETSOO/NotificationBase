@@ -111,12 +111,6 @@ Methods:
     dispose(): void
 
     /**
-     * Remove notification
-     * @param notification Notification
-     */
-    remove(notification: Notification<any>): void
-
-    /**
      * Register component action
      * @param update Update action
      */
