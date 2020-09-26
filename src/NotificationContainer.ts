@@ -8,7 +8,7 @@ import {
  * Notification action
  */
 export interface NotificationAction {
-    (id: string, remove: boolean): void;
+    (id: string): void;
 }
 
 /**
@@ -30,20 +30,12 @@ class NotificationContainerClass {
      */
     readonly notifications: NotificationDictionary;
 
-    private _count: number;
-    /**
-     * Notification count
-     */
-    get count() {
-        return this._count;
-    }
-
     /**
      * Is loading bar showing
      */
     get isLoading() {
         return this.notifications[NotificationAlign.Unknown].some(
-            (n) => n.type === NotificationModalType.Loading
+            (n) => n.open && n.type === NotificationModalType.Loading
         );
     }
 
@@ -51,7 +43,7 @@ class NotificationContainerClass {
      * Is model window showing
      */
     get isModeling() {
-        return this.alignCount(NotificationAlign.Unknown) > 0;
+        return this.alignOpenCount(NotificationAlign.Unknown) > 0;
     }
 
     /**
@@ -59,7 +51,6 @@ class NotificationContainerClass {
      */
     constructor() {
         // Init notification collection
-        this._count = 0;
         this.notifications = {};
         for (const align in NotificationAlign) {
             if (!isNaN(Number(align))) this.notifications[align] = [];
@@ -76,16 +67,6 @@ class NotificationContainerClass {
             throw new Error('Registration required');
         }
 
-        // Support dismiss action
-        const { onDismiss } = notification;
-        notification.onDismiss = () => {
-            // Remove the notification
-            this.remove(notification);
-
-            // Custom onDismiss callback
-            if (onDismiss) onDismiss();
-        };
-
         // Add to the collection
         const alignItems = this.notifications[notification.align];
 
@@ -100,11 +81,8 @@ class NotificationContainerClass {
             else alignItems.push(notification);
         }
 
-        // Add count
-        this._count++;
-
         // Call the registered add method
-        this.registeredUpdate(notification.id, false);
+        this.registeredUpdate(notification.id);
 
         // Auto dismiss in timespan seconds
         if (notification.timespan > 0)
@@ -112,11 +90,20 @@ class NotificationContainerClass {
     }
 
     /**
-     * Align notification count
+     * Align all notification count
      * @param align Align
      */
     alignCount(align: NotificationAlign) {
         return this.notifications[align].length;
+    }
+
+    /**
+     * Align open notification count
+     * @param align Align
+     */
+    alignOpenCount(align: NotificationAlign) {
+        const items = this.notifications[align];
+        return items.filter((item) => item.open).length;
     }
 
     /**
@@ -126,29 +113,6 @@ class NotificationContainerClass {
         for (const align in this.notifications) {
             const items = this.notifications[align];
             items.forEach((item) => item.dispose());
-        }
-    }
-
-    /**
-     * Remove notification
-     * @param notification Notification
-     */
-    remove(notification: Notification<any>): void {
-        if (this.registeredUpdate == null) {
-            throw new Error('Registration required');
-        }
-
-        // Remove from the collection
-        const alignItems = this.notifications[notification.align];
-        const index = alignItems.findIndex((n) => n.id === notification.id);
-        if (index !== -1) {
-            alignItems.splice(index, 1);
-
-            // Deduct count
-            this._count--;
-
-            // Trigger remove
-            this.registeredUpdate(notification.id, true);
         }
     }
 

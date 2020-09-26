@@ -117,6 +117,14 @@ export abstract class Notification<UI> {
      */
     onReturn?: NotificationReturn<any>;
 
+    private _open: boolean = true;
+    /**
+     * Is open or not
+     */
+    get open(): boolean {
+        return this._open;
+    }
+
     /**
      * Show the icon or hide it
      */
@@ -183,6 +191,9 @@ export abstract class Notification<UI> {
             );
             return true;
         }
+
+        // Indicate closed
+        this._open = false;
 
         if (this.onDismiss) this.onDismiss();
 

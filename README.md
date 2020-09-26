@@ -29,6 +29,7 @@ Properties:
 |modal|Display as modal window or not|
 |onDismiss|Dismiss callback|
 |onReturn|Return value callback|
+|open|Is open or not|
 |showIcon|Show icon or not|
 |timespan|Seconds to auto dismiss|
 |title|Title|
@@ -79,7 +80,6 @@ Properties:
 |Name|Description|
 |---:|---|
 |notifications|Readonly. Notification collection to display|
-|count|Readonly. Notification count|
 |isLoading|Is loading bar showing|
 |isModeling|Is model window showing|
 
@@ -94,10 +94,16 @@ Methods:
     add(notification: Notification<any>, top: boolean = false): void
 
     /**
-     * Align notification count
+     * Align all notification count
      * @param align Align
      */
     alignCount(align: NotificationAlign)
+
+    /**
+     * Align open notification count
+     * @param align Align
+     */
+    alignOpenCount(align: NotificationAlign)
 
     /**
      * Dispose all notifications

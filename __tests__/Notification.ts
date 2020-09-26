@@ -41,10 +41,8 @@ test('Tests for notification container add', (done) => {
     // Arrange
     const n = new NotificationTest(NotificationType.Loading, 'Test');
 
-    const update = (notificationId: string, remove: boolean) => {
+    const update = (notificationId: string) => {
         expect(notificationId).toBe(n.id);
-        expect(remove).toBeFalsy();
-        expect(NotificationContainer.count).toBe(1);
         done();
     };
 
@@ -58,13 +56,12 @@ test('Tests for notification container remove', (done) => {
     // Arrange
     const n = new NotificationTest(NotificationType.Loading, 'Test');
     n.onDismiss = () => {
-        expect(NotificationContainer.count).toBe(0);
         expect(NotificationContainer.isLoading).toBeFalsy();
         done();
     };
     n.timespan = 3;
 
-    const update = (notificationId: string, remove: boolean) => {
+    const update = (notificationId: string) => {
         done();
     };
 
@@ -75,7 +72,6 @@ test('Tests for notification container remove', (done) => {
 
     // Assert
     // Previous test added one but a new modal type will remove it
-    expect(NotificationContainer.count).toBe(1);
     expect(NotificationContainer.isLoading).toBeTruthy();
     expect(NotificationContainer.isModeling).toBeTruthy();
 
