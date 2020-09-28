@@ -1,5 +1,9 @@
 import { NotificationContainer } from '../src/NotificationContainer';
-import { Notification, NotificationType } from '../src/Notification';
+import {
+    Notification,
+    NotificationAlign,
+    NotificationType
+} from '../src/Notification';
 
 // Class implementation for tests
 class NotificationTest extends Notification<any> {
@@ -54,14 +58,46 @@ test('Tests for notification container add', (done) => {
 
 test('Tests for notification container remove', (done) => {
     // Arrange
+    // Reset
+    NotificationContainer.dispose();
+
+    // One notification
     const n = new NotificationTest(NotificationType.Loading, 'Test');
     n.onDismiss = () => {
         expect(NotificationContainer.isLoading).toBeFalsy();
+
+        // New notification
+        const newNotification = new NotificationTest(
+            NotificationType.Prompt,
+            'Prompt'
+        );
+        NotificationContainer.add(newNotification);
+
+        // Clear tests
+        expect(
+            NotificationContainer.alignCount(NotificationAlign.Unknown)
+        ).toBe(2);
+
+        NotificationContainer.clear();
+
+        expect(
+            NotificationContainer.alignCount(NotificationAlign.Unknown)
+        ).toBe(1);
+
         done();
     };
     n.timespan = 3;
 
-    const update = (notificationId: string) => {
+    const update = (notificationId: string, dismiss: boolean) => {
+        console.log(
+            notificationId,
+            NotificationContainer.get(NotificationAlign.Unknown, notificationId)
+                ?.open,
+            dismiss
+        );
+        if (dismiss) {
+            expect(n.id).toBe(notificationId);
+        }
         done();
     };
 

@@ -182,6 +182,9 @@ export abstract class Notification<UI> {
      * @returns Is delayed or not
      */
     dismiss(delaySeconds: number = 0): boolean {
+        // If it's closed, return
+        if (!this._open) return false;
+
         if (delaySeconds > 0) {
             this.removeTimeout();
             this.dismissSeed = window.setTimeout(

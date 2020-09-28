@@ -83,9 +83,10 @@ class NotificationContainerClass {
         const alignItems = this.notifications[notification.align];
 
         if (notification.align === NotificationAlign.Unknown) {
-            // Only one modal window is visible
-            if (alignItems.length > 0) {
-                alignItems[0].dismiss();
+            // Dismiss the last modal window
+            const modalCount = alignItems.length;
+            if (modalCount > 0) {
+                alignItems[modalCount - 1].dismiss();
             }
             alignItems.push(notification);
         } else {
@@ -119,13 +120,47 @@ class NotificationContainerClass {
     }
 
     /**
+     * Remove all closed notification
+     */
+    clear(): void {
+        for (const align in this.notifications) {
+            // Align items
+            const items = this.notifications[align];
+
+            // Loop to remove closed item
+            const len = items.length - 1;
+            for (let n = len; n >= 0; n--) {
+                const notification = items[n];
+                if (!notification.open) {
+                    notification.dispose();
+                    items.splice(n, 1);
+                }
+            }
+        }
+    }
+
+    /**
      * Dispose all notifications
      */
     dispose(): void {
         for (const align in this.notifications) {
+            // Align items
             const items = this.notifications[align];
             items.forEach((item) => item.dispose());
+
+            // Reset
+            this.notifications[align] = [];
         }
+    }
+
+    /**
+     * Get notification with align and id
+     * @param align Align
+     * @param id Notification id
+     */
+    get(align: NotificationAlign, id: string): Notification<any> | undefined {
+        const items = this.notifications[align];
+        return items.find((item) => item.id === id);
     }
 
     /**

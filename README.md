@@ -106,9 +106,21 @@ Methods:
     alignOpenCount(align: NotificationAlign)
 
     /**
+     * Remove all closed notification
+     */
+    clear(): void
+
+    /**
      * Dispose all notifications
      */
     dispose(): void
+
+    /**
+     * Get notification with align and id
+     * @param align Align
+     * @param id Notification id
+     */
+    get(align: NotificationAlign, id: string): Notification<any> | undefined
 
     /**
      * Register component action
