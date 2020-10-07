@@ -45,8 +45,9 @@ test('Tests for notification container add', (done) => {
     // Arrange
     const n = new NotificationTest(NotificationType.Loading, 'Test');
 
-    const update = (notificationId: string) => {
-        expect(notificationId).toBe(n.id);
+    const update = (items: [string, boolean][]) => {
+        expect(items.length).toBe(1);
+        expect(items[0][0]).toBe(n.id);
         done();
     };
 
@@ -54,6 +55,9 @@ test('Tests for notification container add', (done) => {
 
     // Act
     NotificationContainer.add(n);
+
+    // Fast forward
+    jest.runOnlyPendingTimers();
 });
 
 test('Tests for notification container remove', (done) => {
@@ -73,6 +77,9 @@ test('Tests for notification container remove', (done) => {
         );
         NotificationContainer.add(newNotification);
 
+        // Fast forward
+        jest.runOnlyPendingTimers();
+
         // Clear tests
         expect(
             NotificationContainer.alignCount(NotificationAlign.Unknown)
@@ -88,16 +95,8 @@ test('Tests for notification container remove', (done) => {
     };
     n.timespan = 3;
 
-    const update = (notificationId: string, dismiss: boolean) => {
-        console.log(
-            notificationId,
-            NotificationContainer.get(NotificationAlign.Unknown, notificationId)
-                ?.open,
-            dismiss
-        );
-        if (dismiss) {
-            expect(n.id).toBe(notificationId);
-        }
+    const update = (items: [string, boolean][]) => {
+        if (items.length == 2) expect(items[0][1]).toBeTruthy();
         done();
     };
 

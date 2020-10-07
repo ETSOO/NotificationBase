@@ -6,9 +6,10 @@ import {
 
 /**
  * Notification action
+ * @param items [notificationId, dismiss] array
  */
 export interface NotificationAction {
-    (id: string, dismiss: boolean): void;
+    (items: [string, boolean][]): void;
 }
 
 /**
@@ -24,6 +25,12 @@ export type NotificationDictionary = {
 class NotificationContainerClass {
     // Registered update action
     private registeredUpdate?: NotificationAction;
+
+    // Register action timeout seed
+    private registerSeed: number = 0;
+
+    // Register items
+    private registerItems: [string, boolean][] = [];
 
     /**
      * Notification collection to display
@@ -63,17 +70,11 @@ class NotificationContainerClass {
      * @param top Is insert top
      */
     add(notification: Notification<any>, top: boolean = false): void {
-        // Callback validate
-        const { registeredUpdate } = this;
-        if (registeredUpdate == null) {
-            throw new Error('Registration required');
-        }
-
         // Support dismiss action
         const { onDismiss } = notification;
         notification.onDismiss = () => {
             // Call the registered callback
-            registeredUpdate(notification.id, true);
+            this.doRegister(notification.id, true);
 
             // Custom onDismiss callback
             if (onDismiss) onDismiss();
@@ -95,7 +96,7 @@ class NotificationContainerClass {
         }
 
         // Call the registered callback
-        registeredUpdate(notification.id, false);
+        this.doRegister(notification.id, false);
 
         // Auto dismiss in timespan seconds
         if (notification.timespan > 0)
@@ -140,9 +141,25 @@ class NotificationContainerClass {
     }
 
     /**
+     * Clear register action timeout
+     */
+    private clearRegisterSeed(): void {
+        if (this.registerSeed > 0) {
+            window.clearTimeout(this.registerSeed);
+            this.registerSeed = 0;
+        }
+    }
+
+    /**
      * Dispose all notifications
      */
     dispose(): void {
+        // Clear timeout seed
+        this.clearRegisterSeed();
+
+        // Reset items
+        this.registerItems = [];
+
         for (const align in this.notifications) {
             // Align items
             const items = this.notifications[align];
@@ -151,6 +168,36 @@ class NotificationContainerClass {
             // Reset
             this.notifications[align] = [];
         }
+    }
+
+    /**
+     * Call register callback
+     * @param id Notification id
+     * @param dismiss Is dismiss
+     */
+    private doRegister(id: string, dismiss: boolean): void {
+        // Clear timeout
+        this.clearRegisterSeed();
+
+        // Add the item
+        this.registerItems.push([id, dismiss]);
+
+        // Delay trigger
+        this.registerSeed = window.setTimeout(
+            this.doRegisterAction.bind(this),
+            50,
+            id,
+            dismiss
+        );
+    }
+
+    // Call register action
+    private doRegisterAction(): void {
+        // Call
+        if (this.registeredUpdate) this.registeredUpdate(this.registerItems);
+
+        // Reset items
+        this.registerItems = [];
     }
 
     /**
