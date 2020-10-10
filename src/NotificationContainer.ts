@@ -183,9 +183,10 @@ class NotificationContainerClass {
         this.registerItems.push([id, dismiss]);
 
         // Delay trigger
+        // 10 miliseconds delay
         this.registerSeed = window.setTimeout(
             this.doRegisterAction.bind(this),
-            50,
+            10,
             id,
             dismiss
         );
