@@ -22,6 +22,18 @@ class NotificationTest extends Notification<any> {
 
 class NotificationContainerTest extends NotificationContainer<any> {
     /**
+     * Report error
+     * @param error Error message
+     * @param callback Callback
+     * @param buttonLabel Confirm button label
+     */
+    alert(
+        error: string,
+        callback?: NotificationReturn<void>,
+        buttonLabel?: string
+    ): void {}
+
+    /**
      * Confirm action
      * @param message Message
      * @param title Title
@@ -69,18 +81,6 @@ class NotificationContainerTest extends NotificationContainer<any> {
         title?: string,
         props?: any,
         callback?: NotificationReturn<string>
-    ): void {}
-
-    /**
-     * Report error
-     * @param error Error message
-     * @param callback Callback
-     * @param buttonLabel Confirm button label
-     */
-    alert(
-        error: string,
-        callback?: NotificationReturn<void>,
-        buttonLabel?: string
     ): void {}
 
     /**

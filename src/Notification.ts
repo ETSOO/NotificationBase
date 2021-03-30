@@ -172,6 +172,16 @@ export interface INotification<UI> {
      * Dispose it
      */
     dispose(): void;
+
+    /**
+     * Render method
+     * @param className Style class name
+     * @param labels UI labels
+     */
+    render(
+        className?: string,
+        labels?: DataTypes.ReadonlyStringDictionary
+    ): UI | undefined;
 }
 
 /**
@@ -330,5 +340,5 @@ export abstract class Notification<UI> implements INotification<UI> {
     abstract render(
         className?: string,
         labels?: DataTypes.ReadonlyStringDictionary
-    ): UI;
+    ): UI | undefined;
 }

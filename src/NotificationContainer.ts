@@ -1,6 +1,5 @@
 import {
     INotification,
-    Notification,
     NotificationAlign,
     NotificationMessageType,
     NotificationModalType,

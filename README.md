@@ -67,8 +67,12 @@ Methods:
     /**
      * Render method
      * @param className Style class name
+     * @param labels UI labels
      */
-    abstract render(className?: string): UI;
+    render(
+        className?: string,
+        labels?: DataTypes.ReadonlyStringDictionary
+    ): UI | undefined
 ```
 
 
