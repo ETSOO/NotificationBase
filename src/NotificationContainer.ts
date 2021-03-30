@@ -1,7 +1,11 @@
 import {
+    INotification,
     Notification,
     NotificationAlign,
-    NotificationModalType
+    NotificationMessageType,
+    NotificationModalType,
+    NotificationParameters,
+    NotificationReturn
 } from './Notification';
 
 /**
@@ -15,16 +19,136 @@ export interface NotificationAction {
 /**
  * Notifications sorted with display align type
  */
-export type NotificationDictionary = {
-    [key: number]: Notification<any>[];
+export type NotificationDictionary<UI> = {
+    [key: number]: INotification<UI>[];
 };
+
+/**
+ * Notifier interface
+ */
+export interface INotifier<UI> {
+    /**
+     * Is loading bar showing
+     */
+    readonly isLoading: boolean;
+
+    /**
+     * Is model window showing
+     */
+    readonly isModeling: boolean;
+
+    /**
+     * Add notification
+     * @param notification Notification
+     * @param top Is insert top
+     */
+    add(notification: INotification<UI>, top?: boolean): void;
+
+    /**
+     * Report error
+     * @param error Error message
+     * @param callback Callback
+     * @param buttonLabel Confirm button label
+     */
+    alert(
+        error: string,
+        callback?: NotificationReturn<void>,
+        buttonLabel?: string
+    ): void;
+
+    /**
+     * Align all notification count
+     * @param align Align
+     */
+    alignCount(align: NotificationAlign): number;
+
+    /**
+     * Align open notification count
+     * @param align Align
+     */
+    alignOpenCount(align: NotificationAlign): number;
+
+    /**
+     * Remove all closed notification
+     */
+    clear(): void;
+
+    /**
+     * Confirm action
+     * @param message Message
+     * @param title Title
+     * @param callback Callback
+     */
+    confirm(
+        message: string,
+        title?: string,
+        callback?: NotificationReturn<boolean>
+    ): void;
+
+    /**
+     * Dispose all notifications
+     */
+    dispose(): void;
+
+    /**
+     * Get notification with align and id
+     * @param align Align
+     * @param id Notification id
+     */
+    get(align: NotificationAlign, id: string): INotification<UI> | undefined;
+
+    /**
+     * Get notification with id
+     * @param id Notification id
+     */
+    getById(id: string): INotification<UI> | undefined;
+
+    /**
+     * Hide loading
+     */
+    hideLoading(): void;
+
+    /**
+     * Show a message
+     * @param type Message type
+     * @param message Message
+     * @param title Title
+     * @param parameters Parameters
+     */
+    message(
+        type: NotificationMessageType,
+        message: string,
+        title?: string,
+        parameters?: NotificationParameters
+    ): INotification<UI>;
+
+    /**
+     * Prompt action
+     * @param message Message
+     * @param title Title
+     * @param props More properties
+     * @param callback Callback
+     */
+    prompt(
+        message: string,
+        title?: string,
+        props?: any,
+        callback?: NotificationReturn<string>
+    ): void;
+
+    /**
+     * Show loading
+     * @param title Title
+     */
+    showLoading(title?: string): void;
+}
 
 /**
  * Notification container class
  */
-class NotificationContainerClass {
+export abstract class NotificationContainer<UI> implements INotifier<UI> {
     // Registered update action
-    private registeredUpdate?: NotificationAction;
+    private update: NotificationAction;
 
     // Register action timeout seed
     private registerSeed: number = 0;
@@ -35,7 +159,7 @@ class NotificationContainerClass {
     /**
      * Notification collection to display
      */
-    readonly notifications: NotificationDictionary;
+    readonly notifications: NotificationDictionary<UI>;
 
     /**
      * Is loading bar showing
@@ -56,11 +180,14 @@ class NotificationContainerClass {
     /**
      * Constructor
      */
-    constructor() {
+    constructor(update: NotificationAction) {
+        // Update callback
+        this.update = update;
+
         // Init notification collection
         this.notifications = {};
-        for (const align in NotificationAlign) {
-            if (!isNaN(Number(align))) this.notifications[align] = [];
+        for (const align in Object.keys(NotificationAlign)) {
+            this.notifications[align] = [];
         }
     }
 
@@ -69,7 +196,7 @@ class NotificationContainerClass {
      * @param notification Notification
      * @param top Is insert top
      */
-    add(notification: Notification<any>, top: boolean = false): void {
+    add(notification: INotification<UI>, top: boolean = false): void {
         // Support dismiss action
         const { onDismiss } = notification;
         notification.onDismiss = () => {
@@ -195,7 +322,7 @@ class NotificationContainerClass {
     // Call register action
     private doRegisterAction(): void {
         // Call
-        if (this.registeredUpdate) this.registeredUpdate(this.registerItems);
+        this.update(this.registerItems);
 
         // Reset items
         this.registerItems = [];
@@ -206,21 +333,83 @@ class NotificationContainerClass {
      * @param align Align
      * @param id Notification id
      */
-    get(align: NotificationAlign, id: string): Notification<any> | undefined {
+    get(align: NotificationAlign, id: string): INotification<UI> | undefined {
         const items = this.notifications[align];
         return items.find((item) => item.id === id);
     }
 
     /**
-     * Register component action
-     * @param update Update action
+     * Get notification with id
+     * @param id Notification id
      */
-    register(update: NotificationAction): void {
-        this.registeredUpdate = update;
+    getById(id: string): INotification<UI> | undefined {
+        for (const align in Object.keys(NotificationAlign)) {
+            var item = this.get((align as unknown) as NotificationAlign, id);
+            if (item != null) return item;
+        }
+        return undefined;
     }
-}
 
-/**
- * Notification container object
- */
-export const NotificationContainer = new NotificationContainerClass();
+    /**
+     * Report error
+     * @param error Error message
+     * @param callback Callback
+     * @param buttonLabel Confirm button label
+     */
+    abstract alert(
+        error: string,
+        callback?: NotificationReturn<void>,
+        buttonLabel?: string
+    ): void;
+
+    /**
+     * Confirm action
+     * @param message Message
+     * @param title Title
+     * @param callback Callback
+     */
+    abstract confirm(
+        message: string,
+        title?: string,
+        callback?: NotificationReturn<boolean>
+    ): void;
+
+    /**
+     * Hide loading
+     */
+    abstract hideLoading(): void;
+
+    /**
+     * Show a message
+     * @param type Message type
+     * @param message Message
+     * @param title Title
+     * @param parameters Parameters
+     */
+    abstract message(
+        type: NotificationMessageType,
+        message: string,
+        title?: string,
+        parameters?: NotificationParameters
+    ): INotification<UI>;
+
+    /**
+     * Prompt action
+     * @param message Message
+     * @param title Title
+     * @param props More properties
+     * @param callback Callback
+     */
+    abstract prompt(
+        message: string,
+        title?: string,
+        props?: any,
+        callback?: NotificationReturn<string>
+    ): void;
+
+    /**
+     * Show loading
+     * @param title Title
+     */
+    abstract showLoading(title?: string): void;
+}

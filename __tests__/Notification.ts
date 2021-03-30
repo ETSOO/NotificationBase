@@ -1,9 +1,13 @@
-import { NotificationContainer } from '../src/NotificationContainer';
 import {
+    INotification,
     Notification,
     NotificationAlign,
+    NotificationMessageType,
+    NotificationParameters,
+    NotificationReturn,
     NotificationType
 } from '../src/Notification';
+import { NotificationContainer } from '../src/NotificationContainer';
 
 // Class implementation for tests
 class NotificationTest extends Notification<any> {
@@ -15,6 +19,79 @@ class NotificationTest extends Notification<any> {
         return {};
     }
 }
+
+class NotificationContainerTest extends NotificationContainer<any> {
+    /**
+     * Confirm action
+     * @param message Message
+     * @param title Title
+     * @param callback Callback
+     */
+    confirm(
+        message: string,
+        title?: string,
+        callback?: NotificationReturn<boolean>
+    ): void {}
+
+    /**
+     * Hide loading
+     */
+    hideLoading(): void {}
+
+    /**
+     * Show a message
+     * @param type Message type
+     * @param message Message
+     * @param title Title
+     * @param parameters Parameters
+     */
+    message(
+        type: NotificationMessageType,
+        message: string,
+        title?: string,
+        parameters?: NotificationParameters
+    ): INotification<any> {
+        return new NotificationTest(
+            NotificationType.Warning,
+            'Warning message will show'
+        );
+    }
+
+    /**
+     * Prompt action
+     * @param message Message
+     * @param title Title
+     * @param props More properties
+     * @param callback Callback
+     */
+    prompt(
+        message: string,
+        title?: string,
+        props?: any,
+        callback?: NotificationReturn<string>
+    ): void {}
+
+    /**
+     * Report error
+     * @param error Error message
+     * @param callback Callback
+     * @param buttonLabel Confirm button label
+     */
+    alert(
+        error: string,
+        callback?: NotificationReturn<void>,
+        buttonLabel?: string
+    ): void {}
+
+    /**
+     * Show loading
+     * @param title Title
+     */
+    showLoading(title?: string): void {}
+}
+
+// Container
+var container = new NotificationContainerTest((update) => {});
 
 // Timer mock
 // https://jestjs.io/docs/en/timer-mocks
@@ -41,20 +118,12 @@ test('Tests for notification dismiss', () => {
     expect(spy).toBeCalledTimes(2);
 });
 
-test('Tests for notification container add', (done) => {
+test('Tests for notification container add', () => {
     // Arrange
     const n = new NotificationTest(NotificationType.Loading, 'Test');
 
-    const update = (items: [string, boolean][]) => {
-        expect(items.length).toBe(1);
-        expect(items[0][0]).toBe(n.id);
-        done();
-    };
-
-    NotificationContainer.register(update);
-
     // Act
-    NotificationContainer.add(n);
+    container.add(n);
 
     // Fast forward
     jest.runOnlyPendingTimers();
@@ -63,52 +132,41 @@ test('Tests for notification container add', (done) => {
 test('Tests for notification container remove', (done) => {
     // Arrange
     // Reset
-    NotificationContainer.dispose();
+    container.dispose();
 
     // One notification
     const n = new NotificationTest(NotificationType.Loading, 'Test');
     n.onDismiss = () => {
-        expect(NotificationContainer.isLoading).toBeFalsy();
+        expect(container.isLoading).toBeFalsy();
 
         // New notification
         const newNotification = new NotificationTest(
             NotificationType.Prompt,
             'Prompt'
         );
-        NotificationContainer.add(newNotification);
+        container.add(newNotification);
 
         // Fast forward
         jest.runOnlyPendingTimers();
 
         // Clear tests
-        expect(
-            NotificationContainer.alignCount(NotificationAlign.Unknown)
-        ).toBe(2);
+        expect(container.alignCount(NotificationAlign.Unknown)).toBe(2);
 
-        NotificationContainer.clear();
+        container.clear();
 
-        expect(
-            NotificationContainer.alignCount(NotificationAlign.Unknown)
-        ).toBe(1);
+        expect(container.alignCount(NotificationAlign.Unknown)).toBe(1);
 
         done();
     };
     n.timespan = 3;
 
-    const update = (items: [string, boolean][]) => {
-        if (items.length == 2) expect(items[0][1]).toBeTruthy();
-        done();
-    };
-
-    NotificationContainer.register(update);
-
     // Act
-    NotificationContainer.add(n);
+    container.add(n);
 
     // Assert
     // Previous test added one but a new modal type will remove it
-    expect(NotificationContainer.isLoading).toBeTruthy();
-    expect(NotificationContainer.isModeling).toBeTruthy();
+    expect(container.isLoading).toBeTruthy();
+    expect(container.isModeling).toBeTruthy();
 
     // Fast forward
     jest.runOnlyPendingTimers();

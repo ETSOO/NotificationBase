@@ -23,18 +23,18 @@ export enum NotificationModalType {
     Loading = 0,
     Confirm = 1,
     Prompt = 2,
-    Error = 3
+    Error = 3 // Alert
 }
 
 /**
  * Message types
  */
 export enum NotificationMessageType {
-    Default = 10,
+    Default = 10, // No default then refer to Info
     Success = 11,
     Warning = 12,
     Info = 13,
-    Danger = 14
+    Danger = 14 // Error
 }
 
 /**
@@ -73,10 +73,34 @@ export interface NotificationReturn<T> {
 }
 
 /**
- * Notification class
- * Generic parameter UI presents UI element type
+ * Notification message parameters
  */
-export abstract class Notification<UI> {
+export interface NotificationParameters {
+    /**
+     * Display align
+     */
+    align?: NotificationAlign;
+
+    /**
+     * Callback
+     */
+    callback?: NotificationReturn<void>;
+
+    /**
+     * Time span to dismiss
+     */
+    timespan?: number;
+
+    /**
+     * Add to the top
+     */
+    top?: boolean;
+}
+
+/**
+ * Notification interface
+ */
+export interface INotification<UI> {
     /**
      * Display align
      */
@@ -85,7 +109,85 @@ export abstract class Notification<UI> {
     /**
      * Content
      */
-    content: string | NotificationCreator<UI>;
+    readonly content: string | NotificationCreator<UI>;
+
+    /**
+     * Unique id
+     */
+    readonly id: string;
+
+    /**
+     * Input or control properties
+     */
+    inputProps?: any;
+
+    /**
+     * Display as modal
+     */
+    modal: boolean;
+
+    /**
+     * On dismiss handling
+     */
+    onDismiss?: NotificationDismiss;
+
+    /**
+     * On return value
+     */
+    onReturn?: NotificationReturn<any>;
+
+    /**
+     * Is open or not
+     */
+    readonly open: boolean;
+
+    /**
+     * Show the icon or hide it
+     */
+    showIcon?: boolean;
+
+    /**
+     * Seconds to auto dismiss
+     */
+    timespan: number;
+
+    /**
+     * Title
+     */
+    readonly title?: string | NotificationCreator<UI>;
+
+    /**
+     * Type
+     */
+    readonly type: NotificationType;
+
+    /**
+     * Dismiss it
+     * @param delaySeconds Delay seconds
+     * @returns Is delayed or not
+     */
+    dismiss(delaySeconds?: number): boolean;
+
+    /**
+     * Dispose it
+     */
+    dispose(): void;
+}
+
+/**
+ * Notification class
+ * Generic parameter UI presents UI element type
+ */
+export abstract class Notification<UI> implements INotification<UI> {
+    /**
+     * Display align
+     */
+    readonly align: NotificationAlign;
+
+    /**
+     * Content
+     */
+    readonly content: string | NotificationCreator<UI>;
 
     /**
      * Dismiss timeout seed
@@ -138,12 +240,12 @@ export abstract class Notification<UI> {
     /**
      * Title
      */
-    title?: string | NotificationCreator<UI>;
+    readonly title?: string | NotificationCreator<UI>;
 
     /**
      * Type
      */
-    type: NotificationType;
+    readonly type: NotificationType;
 
     /**
      * Constructor

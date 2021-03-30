@@ -16,7 +16,7 @@ $ yarn add @etsoo/notificationbase
 ```
 
 ## Notification
-Notification object to display.
+Notification object to display. INotification is the interface.
 
 Properties:
 
@@ -73,7 +73,7 @@ Methods:
 
 
 ## NotificationContainer
-NotificationContainer is a global instance of NotificationContainerClass to provide global access of properties and methods.
+NotificationContainer is to hold all notifications. INotificationContainer is the interface.
 
 Properties:
 
@@ -106,9 +106,40 @@ Methods:
     alignOpenCount(align: NotificationAlign)
 
     /**
+     * Add notification
+     * @param notification Notification
+     * @param top Is insert top
+     */
+    add(notification: INotification<UI>, top?: boolean): void
+
+    /**
+     * Report error
+     * @param error Error message
+     * @param callback Callback
+     * @param buttonLabel Confirm button label
+     */
+    alert(
+        error: string,
+        callback?: NotificationReturn<void>,
+        buttonLabel?: string
+    ): void
+
+    /**
      * Remove all closed notification
      */
     clear(): void
+
+    /**
+     * Confirm action
+     * @param message Message
+     * @param title Title
+     * @param callback Callback
+     */
+    confirm(
+        message: string,
+        title?: string,
+        callback?: NotificationReturn<boolean>
+    ): void
 
     /**
      * Dispose all notifications
@@ -120,11 +151,50 @@ Methods:
      * @param align Align
      * @param id Notification id
      */
-    get(align: NotificationAlign, id: string): Notification<any> | undefined
+    get(align: NotificationAlign, id: string): INotification<UI> | undefined
 
     /**
-     * Register component action
-     * @param update Update action
+     * Get notification with id
+     * @param id Notification id
      */
-    register(update: NotificationAction): void
+    getById(id: string): INotification<UI> | undefined
+
+    /**
+     * Hide loading
+     */
+    hideLoading(): void
+
+    /**
+     * Show a message
+     * @param type Message type
+     * @param message Message
+     * @param title Title
+     * @param parameters Parameters
+     */
+    message(
+        type: NotificationMessageType,
+        message: string,
+        title?: string,
+        parameters?: NotificationParameters
+    ): INotification<UI>
+
+    /**
+     * Prompt action
+     * @param message Message
+     * @param title Title
+     * @param props More properties
+     * @param callback Callback
+     */
+    prompt(
+        message: string,
+        title?: string,
+        props?: any,
+        callback?: NotificationReturn<string>
+    ): void
+
+    /**
+     * Show loading
+     * @param title Title
+     */
+    showLoading(title?: string): void
 ```
