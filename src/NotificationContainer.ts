@@ -11,8 +11,8 @@ import {
  * Notification action
  * @param items [notificationId, dismiss] array
  */
-export interface NotificationAction {
-    (items: [string, boolean][]): void;
+export interface NotificationAction<UI> {
+    (items: [INotification<UI>, boolean][]): void;
 }
 
 /**
@@ -147,13 +147,13 @@ export interface INotifier<UI> {
  */
 export abstract class NotificationContainer<UI> implements INotifier<UI> {
     // Registered update action
-    private update: NotificationAction;
+    private update: NotificationAction<UI>;
 
     // Register action timeout seed
     private registerSeed: number = 0;
 
     // Register items
-    private registerItems: [string, boolean][] = [];
+    private registerItems: [INotification<UI>, boolean][] = [];
 
     /**
      * Notification collection to display
@@ -179,7 +179,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
     /**
      * Constructor
      */
-    constructor(update: NotificationAction) {
+    constructor(update: NotificationAction<UI>) {
         // Update callback
         this.update = update;
 
@@ -200,7 +200,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
         const { onDismiss } = notification;
         notification.onDismiss = () => {
             // Call the registered callback
-            this.doRegister(notification.id, true);
+            this.doRegister(notification, true);
 
             // Custom onDismiss callback
             if (onDismiss) onDismiss();
@@ -222,7 +222,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
         }
 
         // Call the registered callback
-        this.doRegister(notification.id, false);
+        this.doRegister(notification, false);
 
         // Auto dismiss in timespan seconds
         if (notification.timespan > 0)
@@ -301,19 +301,19 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param id Notification id
      * @param dismiss Is dismiss
      */
-    private doRegister(id: string, dismiss: boolean): void {
+    private doRegister(item: INotification<UI>, dismiss: boolean): void {
         // Clear timeout
         this.clearRegisterSeed();
 
         // Add the item
-        this.registerItems.push([id, dismiss]);
+        this.registerItems.push([item, dismiss]);
 
         // Delay trigger
         // 10 miliseconds delay
         this.registerSeed = window.setTimeout(
             this.doRegisterAction.bind(this),
             10,
-            id,
+            item,
             dismiss
         );
     }
