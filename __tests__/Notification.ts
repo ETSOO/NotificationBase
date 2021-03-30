@@ -15,7 +15,7 @@ class NotificationTest extends Notification<any> {
      * Render method
      * @param className Style class name
      */
-    render(className?: string) {
+    render(_className?: string) {
         return {};
     }
 }

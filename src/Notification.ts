@@ -1,4 +1,4 @@
-import { DataTypes, Utils } from '@etsoo/shared';
+import { Utils } from '@etsoo/shared';
 
 /**
  * Display align
@@ -176,12 +176,8 @@ export interface INotification<UI> {
     /**
      * Render method
      * @param className Style class name
-     * @param labels UI labels
      */
-    render(
-        className?: string,
-        labels?: DataTypes.ReadonlyStringDictionary
-    ): UI | undefined;
+    render(className?: string): UI | undefined;
 }
 
 /**
@@ -335,10 +331,6 @@ export abstract class Notification<UI> implements INotification<UI> {
     /**
      * Render method
      * @param className Style class name
-     * @param labels UI labels
      */
-    abstract render(
-        className?: string,
-        labels?: DataTypes.ReadonlyStringDictionary
-    ): UI | undefined;
+    abstract render(className?: string): UI | undefined;
 }
