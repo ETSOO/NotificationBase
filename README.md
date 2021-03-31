@@ -30,6 +30,7 @@ Properties:
 |onDismiss|Dismiss callback|
 |onReturn|Return value callback|
 |open|Is open or not|
+|ref|Render result reference|
 |renderSetup|Setup callback before render|
 |showIcon|Show icon or not|
 |timespan|Seconds to auto dismiss|

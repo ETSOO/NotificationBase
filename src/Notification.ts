@@ -159,6 +159,11 @@ export interface INotification<UI> {
     timespan: number;
 
     /**
+     * Reference
+     */
+    ref?: any;
+
+    /**
      * Render setup / callback
      */
     renderSetup?: NotifictionRenderSetup;
@@ -244,6 +249,11 @@ export abstract class Notification<UI> implements INotification<UI> {
     get open(): boolean {
         return this._open;
     }
+
+    /**
+     * Reference
+     */
+    ref?: any;
 
     /**
      * Render setup / callback
