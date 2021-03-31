@@ -9,10 +9,9 @@ import {
 
 /**
  * Notification action
- * @param items [notificationId, dismiss] array
  */
 export interface NotificationAction<UI> {
-    (items: [INotification<UI>, boolean][]): void;
+    (notification: INotification<UI>, dismiss: boolean): void;
 }
 
 /**
@@ -149,12 +148,6 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
     // Registered update action
     private update: NotificationAction<UI>;
 
-    // Register action timeout seed
-    private registerSeed: number = 0;
-
-    // Register items
-    private registerItems: [INotification<UI>, boolean][] = [];
-
     /**
      * Notification collection to display
      */
@@ -267,25 +260,9 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
     }
 
     /**
-     * Clear register action timeout
-     */
-    private clearRegisterSeed(): void {
-        if (this.registerSeed > 0) {
-            window.clearTimeout(this.registerSeed);
-            this.registerSeed = 0;
-        }
-    }
-
-    /**
      * Dispose all notifications
      */
     dispose(): void {
-        // Clear timeout seed
-        this.clearRegisterSeed();
-
-        // Reset items
-        this.registerItems = [];
-
         for (const align in this.notifications) {
             // Align items
             const items = this.notifications[align];
@@ -302,29 +279,8 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param dismiss Is dismiss
      */
     private doRegister(item: INotification<UI>, dismiss: boolean): void {
-        // Clear timeout
-        this.clearRegisterSeed();
-
-        // Add the item
-        this.registerItems.push([item, dismiss]);
-
-        // Delay trigger
-        // 10 miliseconds delay
-        this.registerSeed = window.setTimeout(
-            this.doRegisterAction.bind(this),
-            10,
-            item,
-            dismiss
-        );
-    }
-
-    // Call register action
-    private doRegisterAction(): void {
         // Call
-        this.update(this.registerItems);
-
-        // Reset items
-        this.registerItems = [];
+        this.update(item, dismiss);
     }
 
     /**
