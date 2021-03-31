@@ -72,15 +72,15 @@ class NotificationContainerTest extends NotificationContainer<any> {
     /**
      * Prompt action
      * @param message Message
+     * @param callback Callback
      * @param title Title
      * @param props More properties
-     * @param callback Callback
      */
     prompt(
         message: string,
+        callback: NotificationReturn<string>,
         title?: string,
-        props?: any,
-        callback?: NotificationReturn<string>
+        props?: any
     ): void {}
 
     /**
