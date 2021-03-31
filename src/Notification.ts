@@ -65,6 +65,13 @@ export interface NotificationDismiss {
 }
 
 /**
+ * Notification reander setup
+ */
+export interface NotifictionRenderSetup {
+    (options: any): void;
+}
+
+/**
  * On return callback
  * return false will prevent default action
  */
@@ -152,6 +159,11 @@ export interface INotification<UI> {
     timespan: number;
 
     /**
+     * Render setup / callback
+     */
+    renderSetup?: NotifictionRenderSetup;
+
+    /**
      * Title
      */
     readonly title?: string | NotificationCreator<UI>;
@@ -232,6 +244,11 @@ export abstract class Notification<UI> implements INotification<UI> {
     get open(): boolean {
         return this._open;
     }
+
+    /**
+     * Render setup / callback
+     */
+    renderSetup?: NotifictionRenderSetup;
 
     /**
      * Show the icon or hide it
