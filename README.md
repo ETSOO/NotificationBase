@@ -69,12 +69,9 @@ Methods:
     /**
      * Render method
      * @param className Style class name
-     * @param labels UI labels
+     * @param options Other options
      */
-    render(
-        className?: string,
-        labels?: DataTypes.ReadonlyStringDictionary
-    ): UI | undefined
+    render(className?: string, options?: any): UI | undefined
 ```
 
 

@@ -193,8 +193,9 @@ export interface INotification<UI> {
     /**
      * Render method
      * @param className Style class name
+     * @param options Other options
      */
-    render(className?: string): UI | undefined;
+    render(className?: string, options?: any): UI | undefined;
 }
 
 /**
