@@ -178,8 +178,8 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
 
         // Init notification collection
         this.notifications = {};
-        for (const align in Object.keys(NotificationAlign)) {
-            this.notifications[align] = [];
+        for (const align in NotificationAlign) {
+            if (!isNaN(Number(align))) this.notifications[align] = [];
         }
     }
 

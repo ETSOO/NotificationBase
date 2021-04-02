@@ -97,6 +97,12 @@ var container = new NotificationContainerTest((update) => {});
 // https://jestjs.io/docs/en/timer-mocks
 jest.useFakeTimers();
 
+test('Tests for basic data', () => {
+    expect(Object.keys(container.notifications).length).toBe(
+        Object.keys(NotificationAlign).length / 2
+    );
+});
+
 test('Tests for notification dismiss', () => {
     // Arrange
     const n = new NotificationTest(NotificationType.Loading, 'Test');
