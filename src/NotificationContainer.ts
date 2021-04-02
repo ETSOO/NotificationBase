@@ -189,6 +189,9 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param top Is insert top
      */
     add(notification: INotification<UI>, top: boolean = false): void {
+        // Align collection
+        const alignItems = this.notifications[notification.align];
+
         // Support dismiss action
         const { onDismiss } = notification;
         notification.onDismiss = () => {
@@ -197,11 +200,17 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
 
             // Custom onDismiss callback
             if (onDismiss) onDismiss();
+
+            // Delayed 10 seconds (for effects) to remove from the collection
+            setTimeout(() => {
+                const index = alignItems.findIndex(
+                    (item) => item.id === notification.id
+                );
+                if (index > -1) alignItems.splice(index, 1);
+            }, 10000);
         };
 
         // Add to the collection
-        const alignItems = this.notifications[notification.align];
-
         if (notification.align === NotificationAlign.Unknown) {
             // Dismiss the last modal window
             const modalCount = alignItems.length;

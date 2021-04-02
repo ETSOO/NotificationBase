@@ -131,8 +131,19 @@ test('Tests for notification container add', () => {
     // Act
     container.add(n);
 
+    // One item added
+    expect(container.alignCount(n.align)).toBe(1);
+
+    // Even dismiss, item still be there with open = false
+    n.dismiss();
+    expect(container.alignCount(n.align)).toBe(1);
+    expect(n.open).toBe(false);
+
     // Fast forward
     jest.runOnlyPendingTimers();
+
+    // Will be totally removed from the collection
+    expect(container.alignCount(n.align)).toBe(0);
 });
 
 test('Tests for notification container remove', (done) => {
