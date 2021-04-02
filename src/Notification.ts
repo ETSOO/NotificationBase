@@ -359,6 +359,7 @@ export abstract class Notification<UI> implements INotification<UI> {
     /**
      * Render method
      * @param className Style class name
+     * @param options Other options
      */
-    abstract render(className?: string): UI | undefined;
+    abstract render(className?: string, options?: any): UI | undefined;
 }
