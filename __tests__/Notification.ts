@@ -1,98 +1,24 @@
 import {
+    INotificaseBase,
     INotification,
     Notification,
     NotificationAlign,
-    NotificationMessageType,
-    NotificationParameters,
     NotificationRenderProps,
-    NotificationReturn,
     NotificationType
 } from '../src/Notification';
 import { NotificationContainer } from '../src/NotificationContainer';
 
 // Class implementation for tests
 class NotificationTest extends Notification<any> {
-    /**
-     * Render method
-     * @param props Props
-     * @param className Style class name
-     * @param options Other options
-     */
-    render(
-        props: NotificationRenderProps,
-        className?: string,
-        options?: any
-    ): any | undefined {}
+    render(props: NotificationRenderProps, className?: string, options?: any) {
+        throw new Error('Method not implemented.');
+    }
 }
 
 class NotificationContainerTest extends NotificationContainer<any> {
-    /**
-     * Report error
-     * @param error Error message
-     * @param callback Callback
-     * @param buttonLabel Confirm button label
-     */
-    alert(
-        error: string,
-        callback?: NotificationReturn<void>,
-        buttonLabel?: string
-    ): void {}
-
-    /**
-     * Confirm action
-     * @param message Message
-     * @param title Title
-     * @param callback Callback
-     */
-    confirm(
-        message: string,
-        title?: string,
-        callback?: NotificationReturn<boolean>
-    ): void {}
-
-    /**
-     * Hide loading
-     */
-    hideLoading(): void {}
-
-    /**
-     * Show a message
-     * @param type Message type
-     * @param message Message
-     * @param title Title
-     * @param parameters Parameters
-     */
-    message(
-        type: NotificationMessageType,
-        message: string,
-        title?: string,
-        parameters?: NotificationParameters
-    ): INotification<any> {
-        return new NotificationTest(
-            NotificationType.Warning,
-            'Warning message will show'
-        );
+    protected addRaw(data: INotificaseBase): INotification<any> {
+        throw new Error('Method not implemented.');
     }
-
-    /**
-     * Prompt action
-     * @param message Message
-     * @param callback Callback
-     * @param title Title
-     * @param props More properties
-     */
-    prompt(
-        message: string,
-        callback: NotificationReturn<string>,
-        title?: string,
-        props?: any
-    ): void {}
-
-    /**
-     * Show loading
-     * @param title Title
-     */
-    showLoading(title?: string): void {}
 }
 
 // Container

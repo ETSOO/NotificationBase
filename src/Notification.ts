@@ -115,33 +115,23 @@ export interface NotificationRenderProps {
 }
 
 /**
- * Notification interface
+ * Notification base interface
  */
-export interface INotification<UI> {
+export interface INotificaseBase {
     /**
      * Display align
      */
-    readonly align: NotificationAlign;
+    readonly align?: NotificationAlign;
 
     /**
      * Content
      */
-    readonly content: string | NotificationCreator<UI>;
-
-    /**
-     * Unique id
-     */
-    readonly id: string;
+    readonly content: string | NotificationCreator<any>;
 
     /**
      * Input or control properties
      */
     inputProps?: any;
-
-    /**
-     * Display as modal
-     */
-    modal: boolean;
 
     /**
      * On dismiss handling
@@ -154,11 +144,6 @@ export interface INotification<UI> {
     onReturn?: NotificationReturn<any>;
 
     /**
-     * Is open or not
-     */
-    readonly open: boolean;
-
-    /**
      * Show the icon or hide it
      */
     showIcon?: boolean;
@@ -166,7 +151,7 @@ export interface INotification<UI> {
     /**
      * Seconds to auto dismiss
      */
-    timespan: number;
+    timespan?: number;
 
     /**
      * Reference
@@ -181,12 +166,52 @@ export interface INotification<UI> {
     /**
      * Title
      */
-    readonly title?: string | NotificationCreator<UI>;
+    readonly title?: string | NotificationCreator<any>;
 
     /**
      * Type
      */
     readonly type: NotificationType;
+}
+
+/**
+ * Notification interface
+ */
+export interface INotification<UI> extends INotificaseBase {
+    /**
+     * Display align
+     */
+    readonly align: NotificationAlign;
+
+    /**
+     * Seconds to auto dismiss
+     */
+    timespan: number;
+
+    /**
+     * Unique id
+     */
+    readonly id: string;
+
+    /**
+     * Display as modal
+     */
+    modal: boolean;
+
+    /**
+     * Is open or not
+     */
+    readonly open: boolean;
+
+    /**
+     * Content
+     */
+    readonly content: string | NotificationCreator<UI>;
+
+    /**
+     * Title
+     */
+    readonly title?: string | NotificationCreator<UI>;
 
     /**
      * Dismiss it

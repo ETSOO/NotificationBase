@@ -1,10 +1,12 @@
 import {
+    INotificaseBase,
     INotification,
     NotificationAlign,
     NotificationMessageType,
     NotificationModalType,
     NotificationParameters,
-    NotificationReturn
+    NotificationReturn,
+    NotificationType
 } from './Notification';
 
 /**
@@ -20,6 +22,18 @@ export interface NotificationAction<UI> {
 export type NotificationDictionary<UI> = {
     [key: number]: INotification<UI>[];
 };
+
+/**
+ * Notification label keys
+ */
+export interface INotifierLabelKeys {
+    alertTitle: string;
+    confirmYes: string;
+    confirmNo: string;
+    promptCancel: string;
+    promptOK: string;
+    loading: string;
+}
 
 /**
  * Notifier interface
@@ -46,13 +60,8 @@ export interface INotifier<UI> {
      * Report error
      * @param error Error message
      * @param callback Callback
-     * @param buttonLabel Confirm button label
      */
-    alert(
-        error: string,
-        callback?: NotificationReturn<void>,
-        buttonLabel?: string
-    ): void;
+    alert(error: string, callback?: NotificationReturn<void>): void;
 
     /**
      * Align all notification count
@@ -138,7 +147,7 @@ export interface INotifier<UI> {
      * Show loading
      * @param title Title
      */
-    showLoading(title?: string): void;
+    showLoading(title: string): void;
 }
 
 /**
@@ -148,10 +157,25 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
     // Registered update action
     private update: NotificationAction<UI>;
 
+    // Last loading
+    private lastLoading?: INotification<UI>;
+
     /**
      * Notification collection to display
      */
     readonly notifications: NotificationDictionary<UI>;
+
+    /**
+     * Label keys
+     */
+    readonly labelKeys: INotifierLabelKeys = {
+        alertTitle: 'warning',
+        confirmYes: 'cancel',
+        confirmNo: 'ok',
+        promptCancel: 'cancel',
+        promptOK: 'ok',
+        loading: 'loading'
+    };
 
     /**
      * Is loading bar showing
@@ -182,6 +206,12 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
             if (!isNaN(Number(align))) this.notifications[align] = [];
         }
     }
+
+    /**
+     * Add raw definition
+     * @param data Notification data definition
+     */
+    protected abstract addRaw(data: INotificaseBase): INotification<UI>;
 
     /**
      * Add notification
@@ -318,13 +348,20 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * Report error
      * @param error Error message
      * @param callback Callback
-     * @param buttonLabel Confirm button label
      */
-    abstract alert(
-        error: string,
-        callback?: NotificationReturn<void>,
-        buttonLabel?: string
-    ): void;
+    alert(error: string, callback?: NotificationReturn<void>) {
+        // Setup
+        const n: INotificaseBase = {
+            type: NotificationType.Error,
+            content: error
+        };
+
+        // Callback
+        n.onReturn = callback;
+
+        // Add to the collection
+        this.addRaw(n);
+    }
 
     /**
      * Confirm action
@@ -332,16 +369,31 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param title Title
      * @param callback Callback
      */
-    abstract confirm(
+    confirm(
         message: string,
         title?: string,
         callback?: NotificationReturn<boolean>
-    ): void;
+    ) {
+        // Setup
+        const n: INotificaseBase = {
+            type: NotificationType.Confirm,
+            content: message,
+            title
+        };
+
+        // Callback
+        n.onReturn = callback;
+
+        // Add to the collection
+        this.addRaw(n);
+    }
 
     /**
      * Hide loading
      */
-    abstract hideLoading(): void;
+    hideLoading() {
+        this.lastLoading?.dismiss();
+    }
 
     /**
      * Show a message
@@ -350,12 +402,30 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param title Title
      * @param parameters Parameters
      */
-    abstract message(
+    message(
         type: NotificationMessageType,
         message: string,
         title?: string,
         parameters?: NotificationParameters
-    ): INotification<UI>;
+    ) {
+        // Destruct
+        const { align, timespan, callback } = parameters ?? {};
+
+        // Setup
+        const n: INotificaseBase = {
+            type,
+            content: message,
+            title,
+            align
+        };
+
+        // Additional parameters
+        n.onReturn = callback;
+        if (timespan) n.timespan = timespan;
+
+        // Add to the collection
+        return this.addRaw(n);
+    }
 
     /**
      * Prompt action
@@ -364,16 +434,42 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param title Title
      * @param props More properties
      */
-    abstract prompt(
+    prompt(
         message: string,
         callback: NotificationReturn<string>,
         title?: string,
         props?: any
-    ): void;
+    ) {
+        // Setup
+        const n: INotificaseBase = {
+            type: NotificationType.Prompt,
+            content: message,
+            title
+        };
+
+        // Additional parameters
+        n.inputProps = props;
+
+        // Callback
+        n.onReturn = callback;
+
+        // Add to the collection
+        this.addRaw(n);
+    }
 
     /**
      * Show loading
      * @param title Title
      */
-    abstract showLoading(title?: string): void;
+    showLoading(title: string = '') {
+        // Setup
+        const n: INotificaseBase = {
+            type: NotificationType.Loading,
+            content: title
+        };
+
+        // Add to the collection
+        // Keep the reference
+        this.lastLoading = this.addRaw(n);
+    }
 }

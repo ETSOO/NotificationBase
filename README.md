@@ -16,7 +16,7 @@ $ yarn add @etsoo/notificationbase
 ```
 
 ## Notification
-Notification object to display. INotification is the interface.
+Notification object to display. INotification is the interface. INotificationBase is for data definition.
 
 Properties:
 
@@ -68,10 +68,15 @@ Methods:
 
     /**
      * Render method
+     * @param props Props
      * @param className Style class name
      * @param options Other options
      */
-    render(className?: string, options?: any): UI | undefined
+    render(
+        props: NotificationRenderProps,
+        className?: string,
+        options?: any
+    ): UI | undefined;
 ```
 
 
@@ -82,6 +87,7 @@ Properties:
 
 |Name|Description|
 |---:|---|
+|labelKeys|Label keys for localization|
 |notifications|Readonly. Notification collection to display|
 |isLoading|Is loading bar showing|
 |isModeling|Is model window showing|
@@ -119,13 +125,8 @@ Methods:
      * Report error
      * @param error Error message
      * @param callback Callback
-     * @param buttonLabel Confirm button label
      */
-    alert(
-        error: string,
-        callback?: NotificationReturn<void>,
-        buttonLabel?: string
-    ): void
+    alert(error: string, callback?: NotificationReturn<void>): void
 
     /**
      * Remove all closed notification
@@ -199,5 +200,5 @@ Methods:
      * Show loading
      * @param title Title
      */
-    showLoading(title?: string): void
+    showLoading(title: string): void
 ```
