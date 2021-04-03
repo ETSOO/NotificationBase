@@ -1,4 +1,4 @@
-import { Utils } from '@etsoo/shared';
+import { DataTypes, Utils } from '@etsoo/shared';
 
 /**
  * Display align
@@ -105,6 +105,16 @@ export interface NotificationParameters {
 }
 
 /**
+ * Notification render props
+ */
+export interface NotificationRenderProps {
+    /**
+     * Labels
+     */
+    labels: DataTypes.ReadonlyStringDictionary;
+}
+
+/**
  * Notification interface
  */
 export interface INotification<UI> {
@@ -192,10 +202,15 @@ export interface INotification<UI> {
 
     /**
      * Render method
+     * @param props Props
      * @param className Style class name
      * @param options Other options
      */
-    render(className?: string, options?: any): UI | undefined;
+    render(
+        props: NotificationRenderProps,
+        className?: string,
+        options?: any
+    ): UI | undefined;
 }
 
 /**
@@ -358,8 +373,13 @@ export abstract class Notification<UI> implements INotification<UI> {
 
     /**
      * Render method
+     * @param props Props
      * @param className Style class name
      * @param options Other options
      */
-    abstract render(className?: string, options?: any): UI | undefined;
+    abstract render(
+        props: NotificationRenderProps,
+        className?: string,
+        options?: any
+    ): UI | undefined;
 }

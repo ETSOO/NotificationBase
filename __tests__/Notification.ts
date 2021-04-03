@@ -4,6 +4,7 @@ import {
     NotificationAlign,
     NotificationMessageType,
     NotificationParameters,
+    NotificationRenderProps,
     NotificationReturn,
     NotificationType
 } from '../src/Notification';
@@ -13,11 +14,15 @@ import { NotificationContainer } from '../src/NotificationContainer';
 class NotificationTest extends Notification<any> {
     /**
      * Render method
+     * @param props Props
      * @param className Style class name
+     * @param options Other options
      */
-    render(_className?: string) {
-        return {};
-    }
+    render(
+        props: NotificationRenderProps,
+        className?: string,
+        options?: any
+    ): any | undefined {}
 }
 
 class NotificationContainerTest extends NotificationContainer<any> {
