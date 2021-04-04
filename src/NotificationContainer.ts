@@ -150,7 +150,7 @@ export interface INotifier<UI> {
      * Show loading
      * @param title Title
      */
-    showLoading(title: string): void;
+    showLoading(title?: string): void;
 }
 
 /**
@@ -467,11 +467,11 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * Show loading
      * @param title Title
      */
-    showLoading(title: string = '') {
+    showLoading(title?: string) {
         // Setup
         const n: INotificaseBase = {
             type: NotificationType.Loading,
-            content: title
+            content: title ?? ''
         };
 
         // Add to the collection
