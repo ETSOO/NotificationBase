@@ -28,6 +28,7 @@ export type NotificationDictionary<UI> = {
  */
 export interface INotifierLabelKeys {
     alertTitle: string;
+    alertOK: string;
     confirmYes: string;
     confirmNo: string;
     promptCancel: string;
@@ -155,6 +156,7 @@ export interface INotifier<UI> {
  */
 export const NotifierLabelKeys: INotifierLabelKeys = {
     alertTitle: 'warning',
+    alertOK: 'ok',
     confirmYes: 'cancel',
     confirmNo: 'ok',
     promptCancel: 'cancel',
