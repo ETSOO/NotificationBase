@@ -151,21 +151,21 @@ export interface INotifier<UI> {
 }
 
 /**
+ * Label keys for localization
+ */
+export const NotifierLabelKeys: INotifierLabelKeys = {
+    alertTitle: 'warning',
+    confirmYes: 'cancel',
+    confirmNo: 'ok',
+    promptCancel: 'cancel',
+    promptOK: 'ok',
+    loading: 'loading'
+};
+
+/**
  * Notification container class
  */
 export abstract class NotificationContainer<UI> implements INotifier<UI> {
-    /**
-     * Label keys
-     */
-    static labelKeys: INotifierLabelKeys = {
-        alertTitle: 'warning',
-        confirmYes: 'cancel',
-        confirmNo: 'ok',
-        promptCancel: 'cancel',
-        promptOK: 'ok',
-        loading: 'loading'
-    };
-
     // Registered update action
     private update: NotificationAction<UI>;
 
