@@ -154,11 +154,6 @@ export interface INotificaseBase {
     timespan?: number;
 
     /**
-     * Reference
-     */
-    ref?: any;
-
-    /**
      * Render setup / callback
      */
     renderSetup?: NotifictionRenderSetup;
@@ -202,6 +197,11 @@ export interface INotification<UI> extends INotificaseBase {
      * Is open or not
      */
     readonly open: boolean;
+
+    /**
+     * Reference
+     */
+    ref?: any;
 
     /**
      * Content

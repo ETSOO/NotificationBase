@@ -154,6 +154,18 @@ export interface INotifier<UI> {
  * Notification container class
  */
 export abstract class NotificationContainer<UI> implements INotifier<UI> {
+    /**
+     * Label keys
+     */
+    static labelKeys: INotifierLabelKeys = {
+        alertTitle: 'warning',
+        confirmYes: 'cancel',
+        confirmNo: 'ok',
+        promptCancel: 'cancel',
+        promptOK: 'ok',
+        loading: 'loading'
+    };
+
     // Registered update action
     private update: NotificationAction<UI>;
 
@@ -164,18 +176,6 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * Notification collection to display
      */
     readonly notifications: NotificationDictionary<UI>;
-
-    /**
-     * Label keys
-     */
-    readonly labelKeys: INotifierLabelKeys = {
-        alertTitle: 'warning',
-        confirmYes: 'cancel',
-        confirmNo: 'ok',
-        promptCancel: 'cancel',
-        promptOK: 'ok',
-        loading: 'loading'
-    };
 
     /**
      * Is loading bar showing

@@ -87,7 +87,7 @@ Properties:
 
 |Name|Description|
 |---:|---|
-|labelKeys|Label keys for localization|
+|labelKeys|(Static) Label keys for localization|
 |notifications|Readonly. Notification collection to display|
 |isLoading|Is loading bar showing|
 |isModeling|Is model window showing|
