@@ -229,7 +229,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
         const alignItems = this.notifications[notification.align];
 
         // Support dismiss action
-        const { onDismiss } = notification;
+        const { align, timespan, onDismiss } = notification;
         notification.onDismiss = () => {
             // Call the registered callback
             this.doRegister(notification, true);
@@ -247,7 +247,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
         };
 
         // Add to the collection
-        if (notification.align === NotificationAlign.Unknown) {
+        if (align === NotificationAlign.Unknown) {
             // Dismiss the last modal window
             const modalCount = alignItems.length;
             if (modalCount > 0) {
@@ -263,8 +263,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
         this.doRegister(notification, false);
 
         // Auto dismiss in timespan seconds
-        if (notification.timespan > 0)
-            notification.dismiss(notification.timespan);
+        if (timespan > 0) notification.dismiss(timespan);
     }
 
     /**
