@@ -346,6 +346,9 @@ export abstract class Notification<UI> implements INotification<UI> {
         // Align, only available for none modal
         if (this.modal) this.align = NotificationAlign.Unknown;
         else if (align != null) this.align = align;
+        // Message align default to top left
+        else if (type in NotificationMessageType)
+            this.align = NotificationAlign.TopLeft;
         else this.align = NotificationAlign.Center;
 
         // Display as modal will lasts otherwise 5 seconds to dismiss it
