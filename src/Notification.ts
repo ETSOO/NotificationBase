@@ -111,7 +111,7 @@ export interface NotificationRenderProps {
     /**
      * Labels
      */
-    labels: DataTypes.ReadonlyStringDictionary;
+    labels: DataTypes.ReadonlySimpleObject;
 }
 
 /**
