@@ -65,9 +65,9 @@ test('Tests for notification container add', () => {
     // One item added
     expect(container.alignCount(n.align)).toBe(1);
 
-    // Even dismiss, item still be there with open = false
+    // Dismiss will remove the item at once
     n.dismiss();
-    expect(container.alignCount(n.align)).toBe(1);
+    expect(container.alignCount(n.align)).toBe(0);
     expect(n.open).toBe(false);
 
     // Fast forward
@@ -98,7 +98,7 @@ test('Tests for notification container remove', (done) => {
         jest.runOnlyPendingTimers();
 
         // Clear tests
-        expect(container.alignCount(NotificationAlign.Unknown)).toBe(2);
+        expect(container.alignCount(NotificationAlign.Unknown)).toBe(1);
 
         container.clear();
 
