@@ -231,19 +231,17 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
         // Support dismiss action
         const { align, timespan, onDismiss } = notification;
         notification.onDismiss = () => {
+            // Remove from the collection
+            const index = alignItems.findIndex(
+                (item) => item.id === notification.id
+            );
+            if (index > -1) alignItems.splice(index, 1);
+
             // Call the registered callback
             this.doRegister(notification, true);
 
             // Custom onDismiss callback
             if (onDismiss) onDismiss();
-
-            // Delayed 10 seconds (for effects) to remove from the collection
-            setTimeout(() => {
-                const index = alignItems.findIndex(
-                    (item) => item.id === notification.id
-                );
-                if (index > -1) alignItems.splice(index, 1);
-            }, 10000);
         };
 
         // Add to the collection
