@@ -327,12 +327,14 @@ export abstract class Notification<UI> implements INotification<UI> {
      * @param content Content
      * @param title Title
      * @param align Align
+     * @param timespan Timespan
      */
     constructor(
         type: NotificationType,
         content: string | NotificationCreator<UI>,
         title?: string | NotificationCreator<UI>,
-        align?: NotificationAlign
+        align?: NotificationAlign,
+        timespan?: number
     ) {
         this.id = Utils.newGUID();
 
@@ -352,7 +354,7 @@ export abstract class Notification<UI> implements INotification<UI> {
         else this.align = NotificationAlign.Center;
 
         // Display as modal will lasts otherwise 5 seconds to dismiss it
-        this.timespan = this.modal ? 0 : 5;
+        this.timespan = timespan ?? (this.modal ? 0 : 5);
     }
 
     /**

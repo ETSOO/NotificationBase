@@ -419,12 +419,12 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
             type,
             content: message,
             title,
-            align
+            align,
+            timespan
         };
 
         // Additional parameters
         n.onReturn = callback;
-        if (timespan) n.timespan = timespan;
 
         // Add to the collection
         return this.addRaw(n);
