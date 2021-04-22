@@ -368,7 +368,7 @@ export abstract class Notification<UI> implements INotification<UI> {
 
         if (delaySeconds > 0) {
             this.removeTimeout();
-            this.dismissSeed = window.setTimeout(
+            this.dismissSeed = setTimeout(
                 this.dismiss.bind(this),
                 delaySeconds * 1000,
                 0 // force to dismiss
@@ -389,7 +389,7 @@ export abstract class Notification<UI> implements INotification<UI> {
     // Remove possible dismiss timeout
     private removeTimeout() {
         if (this.dismissSeed > 0) {
-            window.clearTimeout(this.dismissSeed);
+            clearTimeout(this.dismissSeed);
             this.dismissSeed = 0;
         }
     }
