@@ -24,21 +24,6 @@ export type NotificationDictionary<UI> = {
 };
 
 /**
- * Notification label keys
- */
-export interface INotifierLabelKeys {
-    alertTitle: string;
-    alertOK: string;
-    confirmTitle: string;
-    confirmYes: string;
-    confirmNo: string;
-    promptTitle: string;
-    promptCancel: string;
-    promptOK: string;
-    loading: string;
-}
-
-/**
  * Notifier interface
  */
 export interface INotifier<UI> {
@@ -152,21 +137,6 @@ export interface INotifier<UI> {
      */
     showLoading(title?: string): void;
 }
-
-/**
- * Label keys for localization
- */
-export const NotifierLabelKeys: INotifierLabelKeys = {
-    alertTitle: 'warning',
-    alertOK: 'ok',
-    confirmTitle: 'confirm',
-    confirmYes: 'ok',
-    confirmNo: 'cancel',
-    promptTitle: 'prompt',
-    promptCancel: 'cancel',
-    promptOK: 'ok',
-    loading: 'loading'
-};
 
 /**
  * Notification container class

@@ -1,4 +1,4 @@
-import { DataTypes, Utils } from '@etsoo/shared';
+import { Utils } from '@etsoo/shared';
 
 /**
  * Display align
@@ -107,12 +107,7 @@ export interface NotificationParameters {
 /**
  * Notification render props
  */
-export interface NotificationRenderProps {
-    /**
-     * Labels
-     */
-    labels: DataTypes.ReadonlySimpleObject;
-}
+export interface NotificationRenderProps {}
 
 /**
  * Notification base interface
