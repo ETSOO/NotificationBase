@@ -136,6 +136,18 @@ export interface INotifier<UI> {
      * @param title Title
      */
     showLoading(title?: string): void;
+
+    /**
+     * Show a success message
+     * @param message Message
+     * @param title Title
+     * @param callback Callback
+     */
+    succeed(
+        message: string,
+        title?: string,
+        callback?: NotificationReturn<void>
+    ): void;
 }
 
 /**
@@ -311,7 +323,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      */
     getById(id: string): INotification<UI> | undefined {
         for (const align in Object.keys(NotificationAlign)) {
-            var item = this.get((align as unknown) as NotificationAlign, id);
+            var item = this.get(align as unknown as NotificationAlign, id);
             if (item != null) return item;
         }
         return undefined;
@@ -444,5 +456,22 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
         // Add to the collection
         // Keep the reference
         this.lastLoading = this.addRaw(n);
+    }
+
+    /**
+     * Show a success message
+     * @param message Message
+     * @param title Title
+     * @param callback Callback
+     */
+    succeed(
+        message: string,
+        title?: string,
+        callback?: NotificationReturn<void>
+    ) {
+        this.message(NotificationMessageType.Success, message, title, {
+            align: NotificationAlign.Center,
+            callback
+        });
     }
 }
