@@ -371,6 +371,11 @@ export abstract class Notification<UI> implements INotification<UI> {
             return true;
         }
 
+        // For message, call onReturn
+        if (this.onReturn != null && this.type in NotificationMessageType) {
+            this.onReturn(undefined);
+        }
+
         // Indicate closed
         this._open = false;
 
