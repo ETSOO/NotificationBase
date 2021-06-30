@@ -142,11 +142,13 @@ export interface INotifier<UI> {
      * @param message Message
      * @param title Title
      * @param callback Callback
+     * @param timespan Timespan to close
      */
     succeed(
         message: string,
         title?: string,
-        callback?: NotificationReturn<void>
+        callback?: NotificationReturn<void>,
+        timespan?: number
     ): void;
 }
 
@@ -467,15 +469,22 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param message Message
      * @param title Title
      * @param callback Callback
+     * @param timespan Timespan to close
      */
     succeed(
         message: string,
         title?: string,
-        callback?: NotificationReturn<void>
+        callback?: NotificationReturn<void>,
+        timespan?: number
     ) {
+        // Default to zero for constant
+        timespan ??= 0;
+
+        // Create as message
         this.message(NotificationMessageType.Success, message, title, {
             align: NotificationAlign.Center,
             modal: true,
+            timespan,
             callback
         });
     }
