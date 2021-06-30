@@ -94,6 +94,11 @@ export interface NotificationParameters {
     callback?: NotificationReturn<void>;
 
     /**
+     * Show as modal
+     */
+    modal?: boolean;
+
+    /**
      * Time span to dismiss
      */
     timespan?: number;

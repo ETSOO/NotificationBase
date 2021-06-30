@@ -198,8 +198,12 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
     /**
      * Add raw definition
      * @param data Notification data definition
+     * @param modal Show as modal
      */
-    protected abstract addRaw(data: INotificaseBase): INotification<UI>;
+    protected abstract addRaw(
+        data: INotificaseBase,
+        modal?: boolean
+    ): INotification<UI>;
 
     /**
      * Add notification
@@ -394,7 +398,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
         parameters?: NotificationParameters
     ) {
         // Destruct
-        const { align, timespan, callback } = parameters ?? {};
+        const { align, timespan, callback, modal } = parameters ?? {};
 
         // Setup
         const n: INotificaseBase = {
@@ -409,7 +413,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
         n.onReturn = callback;
 
         // Add to the collection
-        return this.addRaw(n);
+        return this.addRaw(n, modal);
     }
 
     /**
@@ -471,6 +475,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
     ) {
         this.message(NotificationMessageType.Success, message, title, {
             align: NotificationAlign.Center,
+            modal: true,
             callback
         });
     }
