@@ -40,7 +40,7 @@
     },
     "homepage": "https://github.com/ETSOO/NotificationBase#readme",
     "dependencies": {
-        "@etsoo/shared": "^1.0.38"
+        "@etsoo/shared": "^1.0.39"
     },
     "devDependencies": {
         "@babel/core": "^7.13.10",
