@@ -44,10 +44,6 @@ test('Tests for notification dismiss', () => {
     // Act
     n.dismiss(2);
 
-    // Assert
-    // setTimeout should be called 1 time
-    expect(setTimeout).toBeCalled();
-
     // Fast forward
     jest.runOnlyPendingTimers();
 
