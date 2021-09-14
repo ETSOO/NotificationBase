@@ -124,9 +124,9 @@ export interface INotifier<UI> {
      * @param title Title
      * @param props More properties
      */
-    prompt(
+    prompt<T = string>(
         message: string,
-        callback: NotificationReturn<string>,
+        callback: NotificationReturn<T>,
         title?: string,
         props?: any
     ): void;
@@ -425,9 +425,9 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param title Title
      * @param props More properties
      */
-    prompt(
+    prompt<T>(
         message: string,
-        callback: NotificationReturn<string>,
+        callback: NotificationReturn<T>,
         title?: string,
         props?: any
     ) {
