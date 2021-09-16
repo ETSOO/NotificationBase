@@ -76,7 +76,7 @@ export interface NotifictionRenderSetup {
  * return false will prevent default action
  */
 export interface NotificationReturn<T> {
-    (value: T): boolean | void;
+    (value: T): boolean | void | PromiseLike<boolean | void>;
 }
 
 /**
