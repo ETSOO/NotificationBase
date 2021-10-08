@@ -110,6 +110,11 @@ export interface NotificationParameters {
 }
 
 /**
+ * Notification props supported for calls
+ */
+export interface NotificationCallProps {}
+
+/**
  * Notification render props
  */
 export interface NotificationRenderProps {}
@@ -117,7 +122,7 @@ export interface NotificationRenderProps {}
 /**
  * Notification base interface
  */
-export interface INotificaseBase {
+export interface INotificaseBase<C extends NotificationCallProps> {
     /**
      * Display align
      */
@@ -131,7 +136,7 @@ export interface INotificaseBase {
     /**
      * Input or control properties
      */
-    inputProps?: any;
+    inputProps?: C;
 
     /**
      * On dismiss handling
@@ -155,6 +160,7 @@ export interface INotificaseBase {
 
     /**
      * Render setup / callback
+     * Add more properties
      */
     renderSetup?: NotifictionRenderSetup;
 
@@ -172,7 +178,8 @@ export interface INotificaseBase {
 /**
  * Notification interface
  */
-export interface INotification<UI> extends INotificaseBase {
+export interface INotification<UI, C extends NotificationCallProps>
+    extends INotificaseBase<C> {
     /**
      * Display align
      */
@@ -231,18 +238,16 @@ export interface INotification<UI> extends INotificaseBase {
      * @param className Style class name
      * @param options Other options
      */
-    render(
-        props: NotificationRenderProps,
-        className?: string,
-        options?: any
-    ): UI | undefined;
+    render(props: NotificationRenderProps, className?: string): UI | undefined;
 }
 
 /**
  * Notification class
  * Generic parameter UI presents UI element type
  */
-export abstract class Notification<UI> implements INotification<UI> {
+export abstract class Notification<UI, C extends NotificationCallProps>
+    implements INotification<UI, C>
+{
     /**
      * Display align
      */
@@ -266,7 +271,7 @@ export abstract class Notification<UI> implements INotification<UI> {
     /**
      * Input or control properties
      */
-    inputProps?: any;
+    inputProps?: C;
 
     /**
      * Display as modal
@@ -408,13 +413,11 @@ export abstract class Notification<UI> implements INotification<UI> {
 
     /**
      * Render method
-     * @param props Props
+     * @param props Props, provider's UI props
      * @param className Style class name
-     * @param options Other options
      */
     abstract render(
         props: NotificationRenderProps,
-        className?: string,
-        options?: any
+        className?: string
     ): UI | undefined;
 }

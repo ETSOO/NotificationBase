@@ -3,20 +3,26 @@ import {
     INotification,
     Notification,
     NotificationAlign,
+    NotificationCallProps,
     NotificationRenderProps,
     NotificationType
 } from '../src/Notification';
 import { NotificationContainer } from '../src/NotificationContainer';
 
 // Class implementation for tests
-class NotificationTest extends Notification<any> {
+class NotificationTest extends Notification<any, NotificationCallProps> {
     render(props: NotificationRenderProps, className?: string, options?: any) {
         throw new Error('Method not implemented.');
     }
 }
 
-class NotificationContainerTest extends NotificationContainer<any> {
-    protected addRaw(data: INotificaseBase): INotification<any> {
+class NotificationContainerTest extends NotificationContainer<
+    any,
+    NotificationCallProps
+> {
+    protected addRaw(
+        data: INotificaseBase<NotificationCallProps>
+    ): INotification<any, NotificationCallProps> {
         throw new Error('Method not implemented.');
     }
 }

@@ -2,6 +2,7 @@ import {
     INotificaseBase,
     INotification,
     NotificationAlign,
+    NotificationCallProps,
     NotificationMessageType,
     NotificationModalType,
     NotificationParameters,
@@ -12,21 +13,21 @@ import {
 /**
  * Notification action
  */
-export interface NotificationAction<UI> {
-    (notification: INotification<UI>, dismiss: boolean): void;
+export interface NotificationAction<UI, C extends NotificationCallProps> {
+    (notification: INotification<UI, C>, dismiss: boolean): void;
 }
 
 /**
  * Notifications sorted with display align type
  */
-export type NotificationDictionary<UI> = {
-    [key: number]: INotification<UI>[];
+export type NotificationDictionary<UI, C extends NotificationCallProps> = {
+    [key: number]: INotification<UI, C>[];
 };
 
 /**
  * Notifier interface
  */
-export interface INotifier<UI> {
+export interface INotifier<UI, C extends NotificationCallProps> {
     /**
      * Is loading bar showing
      */
@@ -42,14 +43,15 @@ export interface INotifier<UI> {
      * @param notification Notification
      * @param top Is insert top
      */
-    add(notification: INotification<UI>, top?: boolean): void;
+    add(notification: INotification<UI, C>, top?: boolean): void;
 
     /**
      * Report error
      * @param error Error message
      * @param callback Callback
+     * @param props Props
      */
-    alert(error: string, callback?: NotificationReturn<void>): void;
+    alert(error: string, callback?: NotificationReturn<void>, props?: C): void;
 
     /**
      * Align all notification count
@@ -73,11 +75,13 @@ export interface INotifier<UI> {
      * @param message Message
      * @param title Title
      * @param callback Callback
+     * @param props Props
      */
     confirm(
         message: string,
         title?: string,
-        callback?: NotificationReturn<boolean>
+        callback?: NotificationReturn<boolean>,
+        props?: C
     ): void;
 
     /**
@@ -90,13 +94,13 @@ export interface INotifier<UI> {
      * @param align Align
      * @param id Notification id
      */
-    get(align: NotificationAlign, id: string): INotification<UI> | undefined;
+    get(align: NotificationAlign, id: string): INotification<UI, C> | undefined;
 
     /**
      * Get notification with id
      * @param id Notification id
      */
-    getById(id: string): INotification<UI> | undefined;
+    getById(id: string): INotification<UI, C> | undefined;
 
     /**
      * Hide loading
@@ -109,13 +113,15 @@ export interface INotifier<UI> {
      * @param message Message
      * @param title Title
      * @param parameters Parameters
+     * @param props Props
      */
     message(
         type: NotificationMessageType,
         message: string,
         title?: string,
-        parameters?: NotificationParameters
-    ): INotification<UI>;
+        parameters?: NotificationParameters,
+        props?: C
+    ): INotification<UI, C>;
 
     /**
      * Prompt action
@@ -128,7 +134,7 @@ export interface INotifier<UI> {
         message: string,
         callback: NotificationReturn<T>,
         title?: string,
-        props?: any
+        props?: C
     ): void;
 
     /**
@@ -143,29 +149,33 @@ export interface INotifier<UI> {
      * @param title Title
      * @param callback Callback
      * @param timespan Timespan to close
+     * @param props Props
      */
     succeed(
         message: string,
         title?: string,
         callback?: NotificationReturn<void>,
-        timespan?: number
+        timespan?: number,
+        props?: C
     ): void;
 }
 
 /**
  * Notification container class
  */
-export abstract class NotificationContainer<UI> implements INotifier<UI> {
+export abstract class NotificationContainer<UI, C extends NotificationCallProps>
+    implements INotifier<UI, C>
+{
     // Registered update action
-    private update: NotificationAction<UI>;
+    private update: NotificationAction<UI, C>;
 
     // Last loading
-    private lastLoading?: INotification<UI>;
+    private lastLoading?: INotification<UI, C>;
 
     /**
      * Notification collection to display
      */
-    readonly notifications: NotificationDictionary<UI>;
+    readonly notifications: NotificationDictionary<UI, C>;
 
     /**
      * Is loading bar showing
@@ -186,7 +196,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
     /**
      * Constructor
      */
-    constructor(update: NotificationAction<UI>) {
+    constructor(update: NotificationAction<UI, C>) {
         // Update callback
         this.update = update;
 
@@ -203,16 +213,16 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param modal Show as modal
      */
     protected abstract addRaw(
-        data: INotificaseBase,
+        data: INotificaseBase<C>,
         modal?: boolean
-    ): INotification<UI>;
+    ): INotification<UI, C>;
 
     /**
      * Add notification
      * @param notification Notification
      * @param top Is insert top
      */
-    add(notification: INotification<UI>, top: boolean = false): void {
+    add(notification: INotification<UI, C>, top: boolean = false): void {
         // Align collection
         const alignItems = this.notifications[notification.align];
 
@@ -308,7 +318,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param id Notification id
      * @param dismiss Is dismiss
      */
-    private doRegister(item: INotification<UI>, dismiss: boolean): void {
+    private doRegister(item: INotification<UI, C>, dismiss: boolean): void {
         // Call
         this.update(item, dismiss);
     }
@@ -318,7 +328,10 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param align Align
      * @param id Notification id
      */
-    get(align: NotificationAlign, id: string): INotification<UI> | undefined {
+    get(
+        align: NotificationAlign,
+        id: string
+    ): INotification<UI, C> | undefined {
         const items = this.notifications[align];
         return items.find((item) => item.id === id);
     }
@@ -327,7 +340,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * Get notification with id
      * @param id Notification id
      */
-    getById(id: string): INotification<UI> | undefined {
+    getById(id: string): INotification<UI, C> | undefined {
         for (const align in Object.keys(NotificationAlign)) {
             var item = this.get(align as unknown as NotificationAlign, id);
             if (item != null) return item;
@@ -339,16 +352,16 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * Report error
      * @param error Error message
      * @param callback Callback
+     * @param props Props
      */
-    alert(error: string, callback?: NotificationReturn<void>) {
+    alert(error: string, callback?: NotificationReturn<void>, props?: C) {
         // Setup
-        const n: INotificaseBase = {
+        const n: INotificaseBase<C> = {
+            inputProps: props,
             type: NotificationType.Error,
-            content: error
+            content: error,
+            onReturn: callback
         };
-
-        // Callback
-        n.onReturn = callback;
 
         // Add to the collection
         this.addRaw(n);
@@ -359,21 +372,22 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param message Message
      * @param title Title
      * @param callback Callback
+     * @param props Props
      */
     confirm(
         message: string,
         title?: string,
-        callback?: NotificationReturn<boolean>
+        callback?: NotificationReturn<boolean>,
+        props?: C
     ) {
         // Setup
-        const n: INotificaseBase = {
+        const n: INotificaseBase<C> = {
             type: NotificationType.Confirm,
             content: message,
-            title
+            title,
+            onReturn: callback,
+            inputProps: props
         };
-
-        // Callback
-        n.onReturn = callback;
 
         // Add to the collection
         this.addRaw(n);
@@ -392,27 +406,28 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param message Message
      * @param title Title
      * @param parameters Parameters
+     * @param props Props
      */
     message(
         type: NotificationMessageType,
         message: string,
         title?: string,
-        parameters?: NotificationParameters
+        parameters?: NotificationParameters,
+        props?: C
     ) {
         // Destruct
         const { align, timespan, callback, modal } = parameters ?? {};
 
         // Setup
-        const n: INotificaseBase = {
+        const n: INotificaseBase<C> = {
             type,
             content: message,
             title,
             align,
-            timespan
+            timespan,
+            onReturn: callback,
+            inputProps: props
         };
-
-        // Additional parameters
-        n.onReturn = callback;
 
         // Add to the collection
         return this.addRaw(n, modal);
@@ -429,20 +444,16 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
         message: string,
         callback: NotificationReturn<T>,
         title?: string,
-        props?: any
+        props?: C
     ) {
         // Setup
-        const n: INotificaseBase = {
+        const n: INotificaseBase<C> = {
             type: NotificationType.Prompt,
             content: message,
-            title
+            title,
+            inputProps: props,
+            onReturn: callback
         };
-
-        // Additional parameters
-        n.inputProps = props;
-
-        // Callback
-        n.onReturn = callback;
 
         // Add to the collection
         this.addRaw(n);
@@ -454,7 +465,7 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      */
     showLoading(title?: string) {
         // Setup
-        const n: INotificaseBase = {
+        const n: INotificaseBase<C> = {
             type: NotificationType.Loading,
             content: title ?? ''
         };
@@ -470,22 +481,30 @@ export abstract class NotificationContainer<UI> implements INotifier<UI> {
      * @param title Title
      * @param callback Callback
      * @param timespan Timespan to close
+     * @param props Props
      */
     succeed(
         message: string,
         title?: string,
         callback?: NotificationReturn<void>,
-        timespan?: number
+        timespan?: number,
+        props?: C
     ) {
         // Default to zero for constant
         timespan ??= 0;
 
         // Create as message
-        this.message(NotificationMessageType.Success, message, title, {
-            align: NotificationAlign.Center,
-            modal: true,
-            timespan,
-            callback
-        });
+        this.message(
+            NotificationMessageType.Success,
+            message,
+            title,
+            {
+                align: NotificationAlign.Center,
+                modal: true,
+                timespan,
+                callback
+            },
+            props
+        );
     }
 }
