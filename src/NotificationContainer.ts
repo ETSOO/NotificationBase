@@ -51,7 +51,11 @@ export interface INotifier<UI, C extends NotificationCallProps> {
      * @param callback Callback
      * @param props Props
      */
-    alert(error: string, callback?: NotificationReturn<void>, props?: C): void;
+    alert(
+        error: string,
+        callback?: NotificationReturn<void>,
+        props?: C
+    ): INotification<UI, C>;
 
     /**
      * Align all notification count
@@ -82,7 +86,7 @@ export interface INotifier<UI, C extends NotificationCallProps> {
         title?: string,
         callback?: NotificationReturn<boolean>,
         props?: C
-    ): void;
+    ): INotification<UI, C>;
 
     /**
      * Dispose all notifications
@@ -135,7 +139,7 @@ export interface INotifier<UI, C extends NotificationCallProps> {
         callback: NotificationReturn<T>,
         title?: string,
         props?: C
-    ): void;
+    ): INotification<UI, C>;
 
     /**
      * Show loading
@@ -157,7 +161,7 @@ export interface INotifier<UI, C extends NotificationCallProps> {
         callback?: NotificationReturn<void>,
         timespan?: number,
         props?: C
-    ): void;
+    ): INotification<UI, C>;
 }
 
 /**
@@ -355,7 +359,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         };
 
         // Add to the collection
-        this.addRaw(n);
+        return this.addRaw(n);
     }
 
     /**
@@ -381,7 +385,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         };
 
         // Add to the collection
-        this.addRaw(n);
+        return this.addRaw(n);
     }
 
     /**
@@ -447,7 +451,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         };
 
         // Add to the collection
-        this.addRaw(n);
+        return this.addRaw(n);
     }
 
     /**
@@ -485,7 +489,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         timespan ??= 0;
 
         // Create as message
-        this.message(
+        return this.message(
             NotificationMessageType.Success,
             message,
             title,
