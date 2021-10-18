@@ -243,17 +243,8 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         };
 
         // Add to the collection
-        if (align === NotificationAlign.Unknown) {
-            // Dismiss the last modal window
-            const modalCount = alignItems.length;
-            if (modalCount > 0) {
-                alignItems[modalCount - 1].dismiss();
-            }
-            alignItems.push(notification);
-        } else {
-            if (top) alignItems.unshift(notification);
-            else alignItems.push(notification);
-        }
+        if (top) alignItems.unshift(notification);
+        else alignItems.push(notification);
 
         // Call the registered callback
         this.doRegister(notification, false);
