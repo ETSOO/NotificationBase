@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/notificationbase",
-    "version": "1.0.87",
+    "version": "1.0.88",
     "description": "TypeScript notification component for extending with all features described and partially implemented",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -31,7 +31,12 @@
     },
     "keywords": [
         "notification",
-        "TypeScript"
+        "TypeScript",
+        "ETSOO",
+        "SmartERP",
+        "司友云平台",
+        "青岛亿速思维",
+        "上海亿商"
     ],
     "author": "Garry Xiao",
     "license": "MIT",
@@ -40,7 +45,7 @@
     },
     "homepage": "https://github.com/ETSOO/NotificationBase#readme",
     "dependencies": {
-        "@etsoo/shared": "^1.0.53"
+        "@etsoo/shared": "^1.0.54"
     },
     "devDependencies": {
         "@babel/core": "^7.15.8",
