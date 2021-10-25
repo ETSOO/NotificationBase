@@ -51,11 +51,9 @@ export const NotificationType = {
 export type NotificationType = NotificationModalType | NotificationMessageType;
 
 /**
- * Notification UI creator
+ * Notification content
  */
-export interface NotificationCreator<UI> {
-    (): UI;
-}
+export type NotificationContent<UI> = string | UI;
 
 /**
  * On dismiss callback
@@ -131,7 +129,7 @@ export interface INotificaseBase<C extends NotificationCallProps> {
     /**
      * Content
      */
-    readonly content: string | NotificationCreator<any>;
+    readonly content: NotificationContent<unknown>;
 
     /**
      * Input or control properties
@@ -167,7 +165,7 @@ export interface INotificaseBase<C extends NotificationCallProps> {
     /**
      * Title
      */
-    readonly title?: string | NotificationCreator<any>;
+    readonly title?: NotificationContent<unknown>;
 
     /**
      * Type
@@ -213,12 +211,12 @@ export interface INotification<UI, C extends NotificationCallProps>
     /**
      * Content
      */
-    readonly content: string | NotificationCreator<UI>;
+    readonly content: NotificationContent<UI>;
 
     /**
      * Title
      */
-    readonly title?: string | NotificationCreator<UI>;
+    readonly title?: NotificationContent<UI>;
 
     /**
      * Dismiss it
@@ -256,7 +254,7 @@ export abstract class Notification<UI, C extends NotificationCallProps>
     /**
      * Content
      */
-    readonly content: string | NotificationCreator<UI>;
+    readonly content: NotificationContent<UI>;
 
     /**
      * Dismiss timeout seed
@@ -319,7 +317,7 @@ export abstract class Notification<UI, C extends NotificationCallProps>
     /**
      * Title
      */
-    readonly title?: string | NotificationCreator<UI>;
+    readonly title?: NotificationContent<UI>;
 
     /**
      * Type
@@ -336,8 +334,8 @@ export abstract class Notification<UI, C extends NotificationCallProps>
      */
     constructor(
         type: NotificationType,
-        content: string | NotificationCreator<UI>,
-        title?: string | NotificationCreator<UI>,
+        content: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
         align?: NotificationAlign,
         timespan?: number
     ) {

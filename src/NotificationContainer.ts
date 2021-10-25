@@ -3,6 +3,7 @@ import {
     INotification,
     NotificationAlign,
     NotificationCallProps,
+    NotificationContent,
     NotificationMessageType,
     NotificationModalType,
     NotificationParameters,
@@ -52,7 +53,7 @@ export interface INotifier<UI, C extends NotificationCallProps> {
      * @param props Props
      */
     alert(
-        error: string,
+        error: NotificationContent<UI>,
         callback?: NotificationReturn<void>,
         props?: C
     ): INotification<UI, C>;
@@ -82,8 +83,8 @@ export interface INotifier<UI, C extends NotificationCallProps> {
      * @param props Props
      */
     confirm(
-        message: string,
-        title?: string,
+        message: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
         callback?: NotificationReturn<boolean>,
         props?: C
     ): INotification<UI, C>;
@@ -121,8 +122,8 @@ export interface INotifier<UI, C extends NotificationCallProps> {
      */
     message(
         type: NotificationMessageType,
-        message: string,
-        title?: string,
+        message: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
         parameters?: NotificationParameters,
         props?: C
     ): INotification<UI, C>;
@@ -135,9 +136,9 @@ export interface INotifier<UI, C extends NotificationCallProps> {
      * @param props More properties
      */
     prompt<T = string>(
-        message: string,
+        message: NotificationContent<UI>,
         callback: NotificationReturn<T>,
-        title?: string,
+        title?: NotificationContent<UI>,
         props?: C
     ): INotification<UI, C>;
 
@@ -145,7 +146,7 @@ export interface INotifier<UI, C extends NotificationCallProps> {
      * Show loading
      * @param title Title
      */
-    showLoading(title?: string): void;
+    showLoading(title?: NotificationContent<UI>): void;
 
     /**
      * Show a success message
@@ -156,8 +157,8 @@ export interface INotifier<UI, C extends NotificationCallProps> {
      * @param props Props
      */
     succeed(
-        message: string,
-        title?: string,
+        message: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
         callback?: NotificationReturn<void>,
         timespan?: number,
         props?: C
@@ -370,8 +371,8 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      * @param props Props
      */
     confirm(
-        message: string,
-        title?: string,
+        message: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
         callback?: NotificationReturn<boolean>,
         props?: C
     ) {
@@ -405,8 +406,8 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      */
     message(
         type: NotificationMessageType,
-        message: string,
-        title?: string,
+        message: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
         parameters?: NotificationParameters,
         props?: C
     ) {
@@ -436,7 +437,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      * @param props More properties
      */
     prompt<T>(
-        message: string,
+        message: NotificationContent<UI>,
         callback: NotificationReturn<T>,
         title?: string,
         props?: C
@@ -458,7 +459,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      * Show loading
      * @param title Title
      */
-    showLoading(title?: string) {
+    showLoading(title?: NotificationContent<UI>) {
         // Setup
         const n: INotificaseBase<C> = {
             type: NotificationType.Loading,
@@ -479,8 +480,8 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      * @param props Props
      */
     succeed(
-        message: string,
-        title?: string,
+        message: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
         callback?: NotificationReturn<void>,
         timespan?: number,
         props?: C

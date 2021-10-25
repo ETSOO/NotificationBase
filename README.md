@@ -49,8 +49,8 @@ Methods:
      */
     constructor(
         type: NotificationType,
-        content: string | NotificationCreator<UI>,
-        title?: string | NotificationCreator<UI>,
+        content: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
         align?: NotificationAlign
     )
 
@@ -99,73 +99,73 @@ Methods:
      * @param notification Notification
      * @param top Is insert top
      */
-    add(notification: Notification<any>, top: boolean = false): void
-
-    /**
-     * Align all notification count
-     * @param align Align
-     */
-    alignCount(align: NotificationAlign)
-
-    /**
-     * Align open notification count
-     * @param align Align
-     */
-    alignOpenCount(align: NotificationAlign)
-
-    /**
-     * Add notification
-     * @param notification Notification
-     * @param top Is insert top
-     */
-    add(notification: INotification<UI>, top?: boolean): void
+    add(notification: INotification<UI, C>, top?: boolean): void;
 
     /**
      * Report error
      * @param error Error message
      * @param callback Callback
+     * @param props Props
      */
-    alert(error: string, callback?: NotificationReturn<void>): void
+    alert(
+        error: NotificationContent<UI>,
+        callback?: NotificationReturn<void>,
+        props?: C
+    ): INotification<UI, C>;
+
+    /**
+     * Align all notification count
+     * @param align Align
+     */
+    alignCount(align: NotificationAlign): number;
+
+    /**
+     * Align open notification count
+     * @param align Align
+     */
+    alignOpenCount(align: NotificationAlign): number;
 
     /**
      * Remove all closed notification
      */
-    clear(): void
+    clear(): void;
 
     /**
      * Confirm action
      * @param message Message
      * @param title Title
      * @param callback Callback
+     * @param props Props
      */
     confirm(
-        message: string,
-        title?: string,
-        callback?: NotificationReturn<boolean>
-    ): void
+        message: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
+        callback?: NotificationReturn<boolean>,
+        props?: C
+    ): INotification<UI, C>;
 
     /**
      * Dispose all notifications
      */
-    dispose(): void
+    dispose(): void;
 
     /**
      * Get notification with align and id
      * @param align Align
      * @param id Notification id
      */
-    get(align: NotificationAlign, id: string): INotification<UI> | undefined
+    get(align: NotificationAlign, id: string): INotification<UI, C> | undefined;
 
     /**
      * Get notification with id
      * @param id Notification id
      */
-    getById(id: string): INotification<UI> | undefined
+    getById(id: string): INotification<UI, C> | undefined;
 
     /**
      * Hide loading
      */
-    hideLoading(): void
+    hideLoading(): void;
 
     /**
      * Show a message
@@ -173,31 +173,49 @@ Methods:
      * @param message Message
      * @param title Title
      * @param parameters Parameters
+     * @param props Props
      */
     message(
         type: NotificationMessageType,
-        message: string,
-        title?: string,
-        parameters?: NotificationParameters
-    ): INotification<UI>
+        message: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
+        parameters?: NotificationParameters,
+        props?: C
+    ): INotification<UI, C>;
 
     /**
      * Prompt action
      * @param message Message
+     * @param callback Callback
      * @param title Title
      * @param props More properties
-     * @param callback Callback
      */
-    prompt(
-        message: string,
-        title?: string,
-        props?: any,
-        callback?: NotificationReturn<string>
-    ): void
+    prompt<T = string>(
+        message: NotificationContent<UI>,
+        callback: NotificationReturn<T>,
+        title?: NotificationContent<UI>,
+        props?: C
+    ): INotification<UI, C>;
 
     /**
      * Show loading
      * @param title Title
      */
-    showLoading(title: string): void
+    showLoading(title?: NotificationContent<UI>): void;
+
+    /**
+     * Show a success message
+     * @param message Message
+     * @param title Title
+     * @param callback Callback
+     * @param timespan Timespan to close
+     * @param props Props
+     */
+    succeed(
+        message: NotificationContent<UI>,
+        title?: NotificationContent<UI>,
+        callback?: NotificationReturn<void>,
+        timespan?: number,
+        props?: C
+    ): INotification<UI, C>;
 ```
