@@ -120,7 +120,7 @@ export interface NotificationRenderProps {}
 /**
  * Notification base interface
  */
-export interface INotificaseBase<C extends NotificationCallProps> {
+export interface INotificaseBase<UI, C extends NotificationCallProps> {
     /**
      * Display align
      */
@@ -129,7 +129,7 @@ export interface INotificaseBase<C extends NotificationCallProps> {
     /**
      * Content
      */
-    readonly content: NotificationContent<unknown>;
+    readonly content: NotificationContent<UI>;
 
     /**
      * Input or control properties
@@ -165,7 +165,7 @@ export interface INotificaseBase<C extends NotificationCallProps> {
     /**
      * Title
      */
-    readonly title?: NotificationContent<unknown>;
+    readonly title?: NotificationContent<UI>;
 
     /**
      * Type
@@ -177,7 +177,7 @@ export interface INotificaseBase<C extends NotificationCallProps> {
  * Notification interface
  */
 export interface INotification<UI, C extends NotificationCallProps>
-    extends INotificaseBase<C> {
+    extends INotificaseBase<UI, C> {
     /**
      * Display align
      */

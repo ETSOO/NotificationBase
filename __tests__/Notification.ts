@@ -21,7 +21,7 @@ class NotificationContainerTest extends NotificationContainer<
     NotificationCallProps
 > {
     protected addRaw(
-        data: INotificaseBase<NotificationCallProps>
+        data: INotificaseBase<any, NotificationCallProps>
     ): INotification<any, NotificationCallProps> {
         throw new Error('Method not implemented.');
     }

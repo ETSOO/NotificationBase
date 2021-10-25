@@ -218,7 +218,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      * @param modal Show as modal
      */
     protected abstract addRaw(
-        data: INotificaseBase<C>,
+        data: INotificaseBase<UI, C>,
         modal?: boolean
     ): INotification<UI, C>;
 
@@ -352,7 +352,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      */
     alert(error: string, callback?: NotificationReturn<void>, props?: C) {
         // Setup
-        const n: INotificaseBase<C> = {
+        const n: INotificaseBase<UI, C> = {
             inputProps: props,
             type: NotificationType.Error,
             content: error,
@@ -377,7 +377,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         props?: C
     ) {
         // Setup
-        const n: INotificaseBase<C> = {
+        const n: INotificaseBase<UI, C> = {
             type: NotificationType.Confirm,
             content: message,
             title,
@@ -415,7 +415,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         const { align, timespan, callback, modal } = parameters ?? {};
 
         // Setup
-        const n: INotificaseBase<C> = {
+        const n: INotificaseBase<UI, C> = {
             type,
             content: message,
             title,
@@ -443,7 +443,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         props?: C
     ) {
         // Setup
-        const n: INotificaseBase<C> = {
+        const n: INotificaseBase<UI, C> = {
             type: NotificationType.Prompt,
             content: message,
             title,
@@ -461,7 +461,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      */
     showLoading(title?: NotificationContent<UI>) {
         // Setup
-        const n: INotificaseBase<C> = {
+        const n: INotificaseBase<UI, C> = {
             type: NotificationType.Loading,
             content: title ?? ''
         };
