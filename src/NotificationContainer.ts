@@ -176,6 +176,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
 
     // Last loading
     private lastLoading?: INotification<UI, C>;
+    private loadingCount = 0;
 
     /**
      * Notification collection to display
@@ -393,7 +394,13 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      * Hide loading
      */
     hideLoading() {
-        this.lastLoading?.dismiss();
+        // Deduct to count
+        this.loadingCount--;
+
+        if (this.loadingCount === 0) {
+            this.lastLoading?.dismiss();
+            this.lastLoading = undefined;
+        }
     }
 
     /**
@@ -460,15 +467,20 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      * @param title Title
      */
     showLoading(title?: NotificationContent<UI>) {
-        // Setup
-        const n: INotificaseBase<UI, C> = {
-            type: NotificationType.Loading,
-            content: title ?? ''
-        };
+        // Add to count
+        this.loadingCount++;
 
-        // Add to the collection
-        // Keep the reference
-        this.lastLoading = this.addRaw(n);
+        if (this.lastLoading == null) {
+            // Setup
+            const n: INotificaseBase<UI, C> = {
+                type: NotificationType.Loading,
+                content: title ?? ''
+            };
+
+            // Add to the collection
+            // Keep the reference
+            this.lastLoading = this.addRaw(n);
+        }
     }
 
     /**
