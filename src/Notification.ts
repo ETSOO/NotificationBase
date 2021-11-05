@@ -110,7 +110,7 @@ export interface NotificationParameters {
 /**
  * Notification props supported for calls
  */
-export interface NotificationCallProps {}
+export interface NotificationCallProps extends Record<string, unknown> {}
 
 /**
  * Notification render props
