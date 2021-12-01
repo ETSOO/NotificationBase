@@ -50,11 +50,13 @@ export interface INotifier<UI, C extends NotificationCallProps> {
      * Report error
      * @param error Error message
      * @param callback Callback
+     * @param type Type, default is Error
      * @param props Props
      */
     alert(
         error: NotificationContent<UI>,
         callback?: NotificationReturn<void>,
+        type?: NotificationMessageType,
         props?: C
     ): INotification<UI, C>;
 
@@ -233,7 +235,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         const alignItems = this.notifications[notification.align];
 
         // Support dismiss action
-        const { align, timespan, onDismiss } = notification;
+        const { timespan, onDismiss } = notification;
         notification.onDismiss = () => {
             // Remove from the collection
             const index = alignItems.findIndex(
@@ -349,19 +351,25 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      * Report error
      * @param error Error message
      * @param callback Callback
+     * @param type Type, default is Error
      * @param props Props
      */
-    alert(error: string, callback?: NotificationReturn<void>, props?: C) {
+    alert(
+        error: string,
+        callback?: NotificationReturn<void>,
+        type?: NotificationMessageType,
+        props?: C
+    ) {
         // Setup
         const n: INotificaseBase<UI, C> = {
             inputProps: props,
-            type: NotificationType.Error,
+            type: type ?? NotificationType.Error,
             content: error,
             onReturn: callback
         };
 
         // Add to the collection
-        return this.addRaw(n);
+        return this.addRaw(n, true);
     }
 
     /**
