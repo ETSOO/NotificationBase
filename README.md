@@ -164,8 +164,9 @@ Methods:
 
     /**
      * Hide loading
+     * @param force Force to hide, otherwise, only the last one
      */
-    hideLoading(): void;
+    hideLoading(force?: boolean): void;
 
     /**
      * Show a message

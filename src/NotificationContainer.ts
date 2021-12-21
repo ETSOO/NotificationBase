@@ -111,8 +111,9 @@ export interface INotifier<UI, C extends NotificationCallProps> {
 
     /**
      * Hide loading
+     * @param force Force to hide, otherwise, only the last one
      */
-    hideLoading(): void;
+    hideLoading(force?: boolean): void;
 
     /**
      * Show a message
@@ -400,10 +401,13 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
 
     /**
      * Hide loading
+     * @param force Force to hide, otherwise, only the last one
      */
-    hideLoading() {
+    hideLoading(force?: boolean) {
         // Deduct to count
         this.loadingCount--;
+
+        if (force) this.loadingCount = 0;
 
         if (this.loadingCount === 0) {
             this.lastLoading?.dismiss();
