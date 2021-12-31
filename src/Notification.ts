@@ -78,6 +78,19 @@ export interface NotificationReturn<T> {
 }
 
 /**
+ * On prompt return callback
+ * return false will prevent default action
+ * return tuple second parameter is the error message to show
+ */
+export interface NotificationPromptReturn<T> extends NotificationReturn<T> {
+    (value: T):
+        | boolean
+        | [boolean, string?]
+        | void
+        | PromiseLike<boolean | [boolean, string?] | void>;
+}
+
+/**
  * Notification message parameters
  */
 export interface NotificationParameters {
