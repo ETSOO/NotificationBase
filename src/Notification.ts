@@ -72,14 +72,10 @@ export interface NotifictionRenderSetup {
 /**
  * On return callback
  * return false will prevent default action
- * return tuple second parameter is the error message to show
+ * return string is the error message to show
  */
 export interface NotificationReturn<T> {
-    (value: T):
-        | boolean
-        | [boolean, string | undefined]
-        | void
-        | PromiseLike<boolean | [boolean, string | undefined] | void>;
+    (value: T): boolean | string | void | PromiseLike<boolean | string | void>;
 }
 
 /**
