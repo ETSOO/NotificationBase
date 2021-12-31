@@ -71,11 +71,12 @@ export interface NotifictionRenderSetup {
 
 /**
  * On return callback
+ * Undefined value means cancel
  * return false will prevent default action
  * return string is the error message to show
  */
 export interface NotificationReturn<T> {
-    (value: T): boolean | string | void | PromiseLike<boolean | string | void>;
+    (value?: T): boolean | string | void | PromiseLike<boolean | string | void>;
 }
 
 /**
@@ -285,7 +286,7 @@ export abstract class Notification<UI, C extends NotificationCallProps>
     /**
      * On return value
      */
-    onReturn?: NotificationReturn<any>;
+    onReturn?: NotificationReturn<unknown>;
 
     private _open: boolean = true;
     /**
