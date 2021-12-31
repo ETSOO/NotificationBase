@@ -138,7 +138,7 @@ export interface INotifier<UI, C extends NotificationCallProps> {
      * @param title Title
      * @param props More properties
      */
-    prompt<T = string>(
+    prompt<T = string | undefined>(
         message: NotificationContent<UI>,
         callback: NotificationReturn<T>,
         title?: NotificationContent<UI>,
@@ -455,7 +455,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      * @param title Title
      * @param props More properties
      */
-    prompt<T>(
+    prompt<T = string | undefined>(
         message: NotificationContent<UI>,
         callback: NotificationReturn<T>,
         title?: string,

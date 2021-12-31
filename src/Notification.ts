@@ -71,12 +71,12 @@ export interface NotifictionRenderSetup {
 
 /**
  * On return callback
- * Undefined value means cancel
+ * T = string | undefined, Undefined value means cancel
  * return false will prevent default action
  * return string is the error message to show
  */
 export interface NotificationReturn<T> {
-    (value?: T): boolean | string | void | PromiseLike<boolean | string | void>;
+    (value: T): boolean | string | void | PromiseLike<boolean | string | void>;
 }
 
 /**
