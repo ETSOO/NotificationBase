@@ -7,7 +7,6 @@ import {
     NotificationMessageType,
     NotificationModalType,
     NotificationParameters,
-    NotificationPromptReturn,
     NotificationReturn,
     NotificationType
 } from './Notification';
@@ -141,7 +140,7 @@ export interface INotifier<UI, C extends NotificationCallProps> {
      */
     prompt<T = string>(
         message: NotificationContent<UI>,
-        callback: NotificationPromptReturn<T>,
+        callback: NotificationReturn<T>,
         title?: NotificationContent<UI>,
         props?: C
     ): INotification<UI, C>;
@@ -458,7 +457,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      */
     prompt<T>(
         message: NotificationContent<UI>,
-        callback: NotificationPromptReturn<T>,
+        callback: NotificationReturn<T>,
         title?: string,
         props?: C
     ) {

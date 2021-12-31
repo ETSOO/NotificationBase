@@ -72,22 +72,14 @@ export interface NotifictionRenderSetup {
 /**
  * On return callback
  * return false will prevent default action
- */
-export interface NotificationReturn<T> {
-    (value: T): boolean | void | PromiseLike<boolean | void>;
-}
-
-/**
- * On prompt return callback
- * return false will prevent default action
  * return tuple second parameter is the error message to show
  */
-export interface NotificationPromptReturn<T> extends NotificationReturn<T> {
+export interface NotificationReturn<T> {
     (value: T):
         | boolean
-        | [boolean, string?]
+        | [boolean, string | undefined]
         | void
-        | PromiseLike<boolean | [boolean, string?] | void>;
+        | PromiseLike<boolean | [boolean, string | undefined] | void>;
 }
 
 /**
