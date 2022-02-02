@@ -102,14 +102,16 @@ Methods:
     add(notification: INotification<UI, C>, top?: boolean): void;
 
     /**
-     * Report error
-     * @param error Error message
+     * Report error or message
+     * @param errorOrTitle Error message or title
      * @param callback Callback
+     * @param type Type, default is Error
      * @param props Props
      */
     alert(
-        error: NotificationContent<UI>,
+        error: NotificationContent<UI> | [NotificationContent<UI>, NotificationContent<UI>],
         callback?: NotificationReturn<void>,
+        type?: NotificationMessageType,
         props?: C
     ): INotification<UI, C>;
 

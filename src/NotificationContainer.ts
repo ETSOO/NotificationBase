@@ -47,14 +47,16 @@ export interface INotifier<UI, C extends NotificationCallProps> {
     add(notification: INotification<UI, C>, top?: boolean): void;
 
     /**
-     * Report error
-     * @param error Error message
+     * Report error or message
+     * @param errorOrTitle Error message or title
      * @param callback Callback
      * @param type Type, default is Error
      * @param props Props
      */
     alert(
-        error: NotificationContent<UI>,
+        errorOrTitle:
+            | NotificationContent<UI>
+            | [NotificationContent<UI>, NotificationContent<UI>],
         callback?: NotificationReturn<void>,
         type?: NotificationMessageType,
         props?: C
@@ -349,22 +351,35 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
     }
 
     /**
-     * Report error
-     * @param error Error message
+     * Report error or message
+     * @param errorOrTitle Error message or title
      * @param callback Callback
      * @param type Type, default is Error
      * @param props Props
      */
     alert(
-        error: string,
+        errorOrTitle:
+            | NotificationContent<UI>
+            | [NotificationContent<UI>, NotificationContent<UI>],
         callback?: NotificationReturn<void>,
         type?: NotificationMessageType,
         props?: C
     ) {
+        // Parse messange and title
+        let error: NotificationContent<UI>,
+            title: NotificationContent<UI> | undefined;
+        if (Array.isArray(errorOrTitle)) {
+            error = errorOrTitle[0];
+            title = errorOrTitle[1];
+        } else {
+            error = errorOrTitle;
+        }
+
         // Setup
         const n: INotificaseBase<UI, C> = {
             inputProps: props,
             type: type ?? NotificationType.Error,
+            title,
             content: error,
             onReturn: callback
         };
