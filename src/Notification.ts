@@ -1,4 +1,4 @@
-import { Utils } from '@etsoo/shared';
+import { DataTypes, Utils } from '@etsoo/shared';
 
 /**
  * Display align
@@ -112,7 +112,7 @@ export interface NotificationParameters {
 /**
  * Notification props supported for calls
  */
-export interface NotificationCallProps extends Record<string, unknown> {}
+export interface NotificationCallProps extends DataTypes.StringRecord {}
 
 /**
  * Notification render props
