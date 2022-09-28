@@ -77,6 +77,14 @@ Methods:
         className?: string,
         options?: any
     ): UI | undefined;
+
+    /**
+     * Return value
+     * Dismiss first, then run callback
+     * @param value
+     * @returns
+     */
+    returnValue(value: any): Promise<void>;
 ```
 
 

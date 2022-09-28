@@ -244,6 +244,14 @@ export interface INotification<UI, C extends NotificationCallProps>
      * @param options Other options
      */
     render(props: NotificationRenderProps, className?: string): UI | undefined;
+
+    /**
+     * Return value
+     * Dismiss first, then run callback
+     * @param value
+     * @returns
+     */
+    returnValue(value: any): Promise<void>;
 }
 
 /**
@@ -425,4 +433,18 @@ export abstract class Notification<UI, C extends NotificationCallProps>
         props: NotificationRenderProps,
         className?: string
     ): UI | undefined;
+
+    /**
+     * Return value
+     * Dismiss first, then run callback
+     * @param value
+     * @returns
+     */
+    async returnValue(value: any) {
+        if (this.onReturn) {
+            const result = await this.onReturn(value);
+            if (result === false) return;
+        }
+        this.dismiss();
+    }
 }
