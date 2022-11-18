@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/notificationbase",
-    "version": "1.1.16",
+    "version": "1.1.17",
     "description": "TypeScript notification component for extending with all features described and partially implemented",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -52,9 +52,9 @@
         "@babel/plugin-transform-runtime": "^7.19.6",
         "@babel/preset-env": "^7.20.2",
         "@babel/runtime-corejs3": "^7.20.1",
-        "@types/jest": "^29.2.2",
-        "@typescript-eslint/eslint-plugin": "^5.42.1",
-        "@typescript-eslint/parser": "^5.42.1",
+        "@types/jest": "^29.2.3",
+        "@typescript-eslint/eslint-plugin": "^5.43.0",
+        "@typescript-eslint/parser": "^5.43.0",
         "babel-jest": "^29.3.1",
         "eslint": "^8.27.0",
         "eslint-config-airbnb-base": "^15.0.0",
@@ -62,6 +62,6 @@
         "jest": "^29.3.1",
         "jest-environment-jsdom": "^29.3.1",
         "ts-jest": "^29.0.3",
-        "typescript": "^4.8.4"
+        "typescript": "^4.9.3"
     }
 }
