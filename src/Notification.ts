@@ -126,7 +126,7 @@ export type NotificationCallProps = {
 /**
  * Notification render props
  */
-export type NotificationRenderProps = object;
+export type NotificationRenderProps = DataTypes.StringRecord;
 
 /**
  * Notification base interface
