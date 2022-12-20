@@ -1,20 +1,24 @@
 import { DataTypes, Utils } from '@etsoo/shared';
 
+// https://devimalplanet.com/typescript-how-to-extend-one-enum-from-another
+// Number index keys are still there
+const { MiddleLeft, MiddleRight, ...alignItems } = DataTypes.PlacementEnum;
+const newItems = {
+    ...alignItems
+};
+delete newItems[MiddleLeft];
+delete newItems[MiddleRight];
+
 /**
  * Display align
  */
-export enum NotificationAlign {
-    TopLeft,
-    TopCenter,
-    TopRight,
-
-    Center,
-    Unknown, // Reserved for modal, only one instance held at the same time
-
-    BottomLeft,
-    BottomCenter,
-    BottomRight
-}
+export const NotificationAlign = {
+    ...newItems
+};
+export type NotificationAlign = Exclude<
+    DataTypes.PlacementEnum,
+    DataTypes.PlacementEnum.MiddleLeft | DataTypes.PlacementEnum.MiddleRight
+>;
 
 /**
  * Modal types

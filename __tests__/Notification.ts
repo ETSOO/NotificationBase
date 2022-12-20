@@ -1,3 +1,4 @@
+import { DataTypes } from '@etsoo/shared';
 import {
     INotificaseBase,
     INotification,
@@ -36,7 +37,7 @@ jest.useFakeTimers();
 
 test('Tests for basic data', () => {
     expect(Object.keys(container.notifications).length).toBe(
-        Object.keys(NotificationAlign).length / 2
+        DataTypes.getEnumKeys(NotificationAlign).length
     );
 });
 
