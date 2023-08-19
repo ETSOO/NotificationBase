@@ -232,9 +232,10 @@ export interface INotification<UI, C extends NotificationCallProps>
     /**
      * Dismiss it
      * @param delaySeconds Delay seconds
+     * @param noTrigger No onReturn trigger
      * @returns Is delayed or not
      */
-    dismiss(delaySeconds?: number): boolean;
+    dismiss(delaySeconds?: number, noTrigger?: boolean): boolean;
 
     /**
      * Dispose it
@@ -382,9 +383,10 @@ export abstract class Notification<UI, C extends NotificationCallProps>
     /**
      * Dismiss it
      * @param delaySeconds Delay seconds
+     * @param noTrigger No onReturn trigger
      * @returns Is delayed or not
      */
-    dismiss(delaySeconds: number = 0): boolean {
+    dismiss(delaySeconds: number = 0, noTrigger: boolean = false): boolean {
         // If it's closed, return
         if (!this._open) return false;
 
@@ -399,7 +401,11 @@ export abstract class Notification<UI, C extends NotificationCallProps>
         }
 
         // For message, call onReturn
-        if (this.onReturn != null && this.type in NotificationMessageType) {
+        if (
+            !noTrigger &&
+            this.onReturn != null &&
+            this.type in NotificationMessageType
+        ) {
             this.onReturn(undefined);
         }
 
@@ -449,6 +455,6 @@ export abstract class Notification<UI, C extends NotificationCallProps>
             const result = await this.onReturn(value);
             if (result === false) return;
         }
-        this.dismiss();
+        this.dismiss(0, true);
     }
 }
