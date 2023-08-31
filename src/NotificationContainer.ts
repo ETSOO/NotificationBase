@@ -134,6 +134,17 @@ export interface INotifier<UI, C extends NotificationCallProps> {
     ): INotification<UI, C>;
 
     /**
+     * Popup component as modal
+     * @param component Component to popup
+     * @param anchor Position anchor
+     * @returns Result
+     */
+    popup(
+        component: NotificationContent<UI>,
+        anchor?: HTMLElement | string | { left: number; top: number }
+    ): INotification<UI, C>;
+
+    /**
      * Prompt action
      * @param message Message
      * @param callback Callback
@@ -508,6 +519,29 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
             // Keep the reference
             this.lastLoading = this.addRaw(n);
         }
+    }
+
+    /**
+     * Popup component as modal
+     * @param component Component to popup
+     * @param anchor Position anchor
+     * @returns Result
+     */
+    popup(
+        component: NotificationContent<UI>,
+        anchor?: HTMLElement | string | { left: number; top: number }
+    ) {
+        // Setup
+        const n: INotificaseBase<UI, C> = {
+            type: NotificationType.Popup,
+            content: component,
+            renderSetup: (options) => {
+                options.anchor = anchor;
+            }
+        };
+
+        // Add to the collection
+        return this.addRaw(n);
     }
 
     /**

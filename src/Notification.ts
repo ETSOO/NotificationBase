@@ -27,7 +27,8 @@ export enum NotificationModalType {
     Loading = 0,
     Confirm = 1,
     Prompt = 2,
-    Error = 3 // Alert
+    Error = 3, // Alert
+    Popup = 6
 }
 
 /**

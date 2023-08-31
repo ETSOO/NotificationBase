@@ -195,6 +195,17 @@ Methods:
     ): INotification<UI, C>;
 
     /**
+     * Popup component as modal
+     * @param component Component to popup
+     * @param anchor Position anchor
+     * @returns Result
+     */
+    popup(
+        component: NotificationContent<UI>,
+        anchor?: HTMLElement | string | { left: number; top: number }
+    ): INotification<UI, C>;
+
+    /**
      * Prompt action
      * @param message Message
      * @param callback Callback
