@@ -71,7 +71,7 @@ export interface NotificationDismiss {
  * Notification reander setup
  */
 export interface NotifictionRenderSetup {
-    (options: any): void;
+    (options: any): any;
 }
 
 /**

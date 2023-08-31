@@ -136,12 +136,12 @@ export interface INotifier<UI, C extends NotificationCallProps> {
     /**
      * Popup component as modal
      * @param component Component to popup
-     * @param anchor Position anchor
+     * @param properties Popup properties
      * @returns Result
      */
     popup(
         component: NotificationContent<UI>,
-        anchor?: HTMLElement | string | { left: number; top: number }
+        properties: any
     ): INotification<UI, C>;
 
     /**
@@ -524,19 +524,16 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
     /**
      * Popup component as modal
      * @param component Component to popup
-     * @param anchor Position anchor
+     * @param properties Popup properties
      * @returns Result
      */
-    popup(
-        component: NotificationContent<UI>,
-        anchor?: HTMLElement | string | { left: number; top: number }
-    ) {
+    popup(component: NotificationContent<UI>, properties: any) {
         // Setup
         const n: INotificaseBase<UI, C> = {
             type: NotificationType.Popup,
             content: component,
-            renderSetup: (options) => {
-                options.anchor = anchor;
+            renderSetup: (_options) => {
+                return properties;
             }
         };
 
