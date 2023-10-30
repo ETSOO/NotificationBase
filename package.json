@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/notificationbase",
-    "version": "1.1.29",
+    "version": "1.1.30",
     "description": "TypeScript notification component for extending with all features described and partially implemented",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -45,14 +45,14 @@
     },
     "homepage": "https://github.com/ETSOO/NotificationBase#readme",
     "dependencies": {
-        "@etsoo/shared": "^1.2.17"
+        "@etsoo/shared": "^1.2.18"
     },
     "devDependencies": {
         "@babel/core": "^7.23.2",
         "@babel/plugin-transform-runtime": "^7.23.2",
         "@babel/preset-env": "^7.23.2",
         "@babel/runtime-corejs3": "^7.23.2",
-        "@types/jest": "^29.5.5",
+        "@types/jest": "^29.5.7",
         "babel-jest": "^29.7.0",
         "jest": "^29.7.0",
         "jest-environment-jsdom": "^29.7.0",
