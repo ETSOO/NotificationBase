@@ -40,6 +40,16 @@ export interface INotifier<UI, C extends NotificationCallProps> {
     readonly isModeling: boolean;
 
     /**
+     * Loading count
+     */
+    readonly loadingCount: number;
+
+    /**
+     * Is debug mode
+     */
+    debug: boolean;
+
+    /**
      * Add notification
      * @param notification Notification
      * @param top Is insert top
@@ -192,7 +202,23 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
 
     // Last loading
     private lastLoading?: INotification<UI, C>;
-    private loadingCount = 0;
+
+    private _loadingCount = 0;
+
+    /**
+     * Loading count
+     */
+    get loadingCount() {
+        return this._loadingCount;
+    }
+    private set loadingCount(value: number) {
+        this._loadingCount = value;
+    }
+
+    /**
+     * Is debug mode
+     */
+    debug: boolean = false;
 
     /**
      * Notification collection to display

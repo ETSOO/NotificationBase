@@ -55,7 +55,7 @@ test('Tests for notification dismiss', () => {
     jest.runOnlyPendingTimers();
 
     // dismiss should be called 2 times
-    expect(spy).toBeCalledTimes(2);
+    expect(spy).toHaveBeenCalledTimes(2);
 });
 
 test('Tests for notification container add', () => {
