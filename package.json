@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/notificationbase",
-    "version": "1.1.46",
+    "version": "1.1.47",
     "description": "TypeScript notification component for extending with all features described and partially implemented",
     "main": "lib/cjs/index.js",
     "module": "lib/mjs/index.js",

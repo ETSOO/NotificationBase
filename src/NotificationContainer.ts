@@ -456,14 +456,23 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
      * @param force Force to hide, otherwise, only the last one
      */
     hideLoading(force?: boolean) {
-        // Deduct to count
-        this.loadingCount--;
+        if (this.lastLoading == null) {
+            // Reset count when no loading
+            this.loadingCount = 0;
+        } else {
+            // Deduct to count
+            // Avoid negative result (-1)
+            if (this.loadingCount > 0) {
+                this.loadingCount--;
+            }
 
-        if (force) this.loadingCount = 0;
+            if (force) this.loadingCount = 0;
 
-        if (this.loadingCount === 0) {
-            this.lastLoading?.dismiss();
-            this.lastLoading = undefined;
+            // Hide the loading
+            if (this.loadingCount === 0) {
+                this.lastLoading.dismiss();
+                this.lastLoading = undefined;
+            }
         }
     }
 
