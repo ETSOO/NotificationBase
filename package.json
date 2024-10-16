@@ -1,6 +1,6 @@
 {
     "name": "@etsoo/notificationbase",
-    "version": "1.1.49",
+    "version": "1.1.50",
     "description": "TypeScript notification component for extending with all features described and partially implemented",
     "main": "lib/cjs/index.js",
     "module": "lib/mjs/index.js",
@@ -52,12 +52,12 @@
     },
     "homepage": "https://github.com/ETSOO/NotificationBase#readme",
     "dependencies": {
-        "@etsoo/shared": "^1.2.48"
+        "@etsoo/shared": "^1.2.49"
     },
     "devDependencies": {
-        "@babel/core": "^7.25.7",
+        "@babel/core": "^7.25.8",
         "@babel/plugin-transform-runtime": "^7.25.7",
-        "@babel/preset-env": "^7.25.7",
+        "@babel/preset-env": "^7.25.8",
         "@babel/runtime-corejs3": "^7.25.7",
         "@types/jest": "^29.5.13",
         "babel-jest": "^29.7.0",
