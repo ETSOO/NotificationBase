@@ -278,10 +278,7 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         const { timespan, onDismiss } = notification;
         notification.onDismiss = () => {
             // Remove from the collection
-            const index = alignItems.findIndex(
-                (item) => item.id === notification.id
-            );
-            if (index > -1) alignItems.splice(index, 1);
+            alignItems.remove((n) => n.id === notification.id);
 
             // Call the registered callback
             this.doRegister(notification, true);
@@ -326,15 +323,14 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
             // Align items
             const items = this.notifications[align];
 
-            // Loop to remove closed item
-            const len = items.length - 1;
-            for (let n = len; n >= 0; n--) {
-                const notification = items[n];
-                if (!notification.open) {
-                    notification.dispose();
-                    items.splice(n, 1);
+            // Remove closed items
+            items.remove((n) => {
+                if (!n.open) {
+                    n.dispose();
+                    return true;
                 }
-            }
+                return false;
+            });
         }
     }
 
