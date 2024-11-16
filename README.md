@@ -1,4 +1,5 @@
 # NotificationBase
+
 **TypeScript notification component for extending with all features described and partially implemented.**
 
 ## Installing
@@ -16,26 +17,27 @@ $ yarn add @etsoo/notificationbase
 ```
 
 ## Notification
+
 Notification object to display. INotification is the interface. INotificationBase is for data definition.
 
 Properties:
 
-|Name|Description|
-|---:|---|
-|align|Readonly, display align|
-|content|Content to display|
-|id|Unique id|
-|inputProps|Input or additional control properties|
-|modal|Display as modal window or not|
-|onDismiss|Dismiss callback|
-|onReturn|Return value callback|
-|open|Is open or not|
-|ref|Render result reference|
-|renderSetup|Setup callback before render|
-|showIcon|Show icon or not|
-|timespan|Seconds to auto dismiss|
-|title|Title|
-|type|Notification type|
+|        Name | Description                            |
+| ----------: | -------------------------------------- |
+|       align | Readonly, display align                |
+|     content | Content to display                     |
+|          id | Unique id                              |
+|  inputProps | Input or additional control properties |
+|       modal | Display as modal window or not         |
+|   onDismiss | Dismiss callback                       |
+|    onReturn | Return value callback                  |
+|        open | Is open or not                         |
+|         ref | Render result reference                |
+| renderSetup | Setup callback before render           |
+|    showIcon | Show icon or not                       |
+|    timespan | Seconds to auto dismiss                |
+|       title | Title                                  |
+|        type | Notification type                      |
 
 Methods:
 
@@ -87,17 +89,17 @@ Methods:
     returnValue(value: any): Promise<void>;
 ```
 
-
 ## NotificationContainer
+
 NotificationContainer is to hold all notifications. INotificationContainer is the interface.
 
 Properties:
 
-|Name|Description|
-|---:|---|
-|notifications|Readonly. Notification collection to display|
-|isLoading|Is loading bar showing|
-|isModeling|Is model window showing|
+|          Name | Description                                  |
+| ------------: | -------------------------------------------- |
+| notifications | Readonly. Notification collection to display |
+|     isLoading | Is loading bar showing                       |
+|    isModeling | Is model window showing                      |
 
 Methods:
 
