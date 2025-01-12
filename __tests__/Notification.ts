@@ -33,7 +33,7 @@ var container = new NotificationContainerTest((update) => {});
 
 // Timer mock
 // https://jestjs.io/docs/en/timer-mocks
-jest.useFakeTimers();
+vi.useFakeTimers();
 
 test("Tests for basic data", () => {
   expect(Object.keys(container.notifications).length).toBe(
@@ -46,13 +46,13 @@ test("Tests for notification dismiss", () => {
   const n = new NotificationTest(NotificationType.Loading, "Test");
 
   // Spy on the method
-  const spy = jest.spyOn(n, "dismiss");
+  const spy = vi.spyOn(n, "dismiss");
 
   // Act
   n.dismiss(2);
 
   // Fast forward
-  jest.runOnlyPendingTimers();
+  vi.runOnlyPendingTimers();
 
   // dismiss should be called 2 times
   expect(spy).toHaveBeenCalledTimes(2);
@@ -74,13 +74,13 @@ test("Tests for notification container add", () => {
   expect(n.open).toBe(false);
 
   // Fast forward
-  jest.runOnlyPendingTimers();
+  vi.runOnlyPendingTimers();
 
   // Will be totally removed from the collection
   expect(container.alignCount(n.align)).toBe(0);
 });
 
-test("Tests for notification container remove", (done) => {
+test("Tests for notification container remove", () => {
   // Arrange
   // Reset
   container.dispose();
@@ -98,7 +98,7 @@ test("Tests for notification container remove", (done) => {
     container.add(newNotification);
 
     // Fast forward
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
 
     // Clear tests
     expect(container.alignCount(NotificationAlign.Unknown)).toBe(1);
@@ -106,8 +106,6 @@ test("Tests for notification container remove", (done) => {
     container.clear();
 
     expect(container.alignCount(NotificationAlign.Unknown)).toBe(1);
-
-    done();
   };
   n.timespan = 3;
 
@@ -120,7 +118,7 @@ test("Tests for notification container remove", (done) => {
   expect(container.isModeling).toBeTruthy();
 
   // Fast forward
-  jest.runOnlyPendingTimers();
+  vi.runOnlyPendingTimers();
 });
 
-jest.clearAllTimers();
+vi.clearAllTimers();
