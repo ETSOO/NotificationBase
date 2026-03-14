@@ -104,6 +104,20 @@ export interface INotifier<UI, C extends NotificationCallProps> {
   ): INotification<UI, C>;
 
   /**
+   * Collecting data action
+   * @param message Message
+   * @param callback Callback
+   * @param title Title
+   * @param props More properties
+   */
+  data<T>(
+    inputs: Exclude<NotificationContent<UI>, string>,
+    callback: NotificationReturn<T>,
+    title?: string,
+    props?: C
+  ): INotification<UI, C>;
+
+  /**
    * Dispose all notifications
    */
   dispose(): void;
@@ -194,9 +208,10 @@ export interface INotifier<UI, C extends NotificationCallProps> {
 /**
  * Notification container class
  */
-export abstract class NotificationContainer<UI, C extends NotificationCallProps>
-  implements INotifier<UI, C>
-{
+export abstract class NotificationContainer<
+  UI,
+  C extends NotificationCallProps
+> implements INotifier<UI, C> {
   // Registered update action
   private update: NotificationAction<UI, C>;
 
@@ -467,6 +482,32 @@ export abstract class NotificationContainer<UI, C extends NotificationCallProps>
         this.lastLoading = undefined;
       }
     }
+  }
+
+  /**
+   * Collecting data action
+   * @param message Message
+   * @param callback Callback
+   * @param title Title
+   * @param props More properties
+   */
+  data<T>(
+    inputs: Exclude<NotificationContent<UI>, string>,
+    callback: NotificationReturn<T>,
+    title?: string,
+    props?: C
+  ) {
+    // Setup
+    const n: INotificaseBase<UI, C> = {
+      type: NotificationType.Data,
+      content: inputs,
+      title,
+      inputProps: props,
+      onReturn: callback
+    };
+
+    // Add to the collection
+    return this.addRaw(n);
   }
 
   /**

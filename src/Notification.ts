@@ -28,7 +28,8 @@ export enum NotificationModalType {
   Confirm = 1,
   Prompt = 2,
   Error = 3, // Alert
-  Popup = 6
+  Popup = 6,
+  Data = 7
 }
 
 /**
@@ -188,8 +189,10 @@ export interface INotificaseBase<UI, C extends NotificationCallProps = {}> {
 /**
  * Notification interface
  */
-export interface INotification<UI, C extends NotificationCallProps>
-  extends INotificaseBase<UI, C> {
+export interface INotification<
+  UI,
+  C extends NotificationCallProps
+> extends INotificaseBase<UI, C> {
   /**
    * Display align
    */
@@ -264,9 +267,10 @@ export interface INotification<UI, C extends NotificationCallProps>
  * Notification class
  * Generic parameter UI presents UI element type
  */
-export abstract class Notification<UI, C extends NotificationCallProps>
-  implements INotification<UI, C>
-{
+export abstract class Notification<
+  UI,
+  C extends NotificationCallProps
+> implements INotification<UI, C> {
   /**
    * Display align
    */
