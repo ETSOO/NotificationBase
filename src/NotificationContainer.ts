@@ -183,6 +183,12 @@ export interface INotifier<UI, C extends NotificationCallProps> {
   ): INotification<UI, C>;
 
   /**
+   * Remove cache
+   * @param id Notification id
+   */
+  removeCache(id: string): void;
+
+  /**
    * Show loading
    * @param title Title
    */
@@ -292,6 +298,9 @@ export abstract class NotificationContainer<
     // Support dismiss action
     const { timespan, onDismiss } = notification;
     notification.onDismiss = () => {
+      // Remove cache
+      this.removeCache(notification.id);
+
       // Remove from the collection
       alignItems.remove((n) => n.id === notification.id);
 
@@ -568,6 +577,12 @@ export abstract class NotificationContainer<
     // Add to the collection
     return this.addRaw(n);
   }
+
+  /**
+   * Remove cache
+   * @param id Notification id
+   */
+  removeCache(id: string) {}
 
   /**
    * Show loading
